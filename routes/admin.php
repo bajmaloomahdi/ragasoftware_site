@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,5 +35,15 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:dashboard.view')
         ->name('dashboard');
 
-    // CMS resource routes are added in Phase 5.
+    // --- Media library ---
+    Route::middleware('can:media.view')->group(function () {
+        Route::get('media', [MediaController::class, 'index'])->name('media.index');
+        Route::post('media', [MediaController::class, 'store'])->middleware('can:media.upload')->name('media.store');
+        Route::put('media/{medium}', [MediaController::class, 'update'])->middleware('can:media.upload')->name('media.update');
+        Route::delete('media/{medium}', [MediaController::class, 'destroy'])->middleware('can:media.delete')->name('media.destroy');
+        Route::post('media-folders', [MediaController::class, 'storeFolder'])->middleware('can:media.upload')->name('media-folders.store');
+        Route::delete('media-folders/{folder}', [MediaController::class, 'destroyFolder'])->middleware('can:media.delete')->name('media-folders.destroy');
+    });
+
+    // Further CMS resource routes are added in Phase 5.
 });
