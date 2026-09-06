@@ -54,6 +54,11 @@ class Page extends Model
         return $this->is_homepage ? '/' : '/'.$this->slug;
     }
 
+    public function publicPath(?string $slug = null): ?string
+    {
+        return $this->is_homepage ? null : '/'.($slug ?? $this->slug);
+    }
+
     public function seoFallbacks(): array
     {
         return [

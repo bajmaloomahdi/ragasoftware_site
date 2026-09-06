@@ -18,6 +18,7 @@ class PageController extends Controller
 
         return view('public.page', [
             'page' => $page,
+            'seoModel' => $page,
             'sectionsHtml' => $renderer->render($page),
             'isHome' => true,
         ]);
@@ -35,6 +36,7 @@ class PageController extends Controller
 
         return view('public.page', [
             'page' => $page,
+            'seoModel' => $page,
             'sectionsHtml' => $renderer->render($page),
             'isHome' => false,
         ]);

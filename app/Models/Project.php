@@ -39,6 +39,11 @@ class Project extends Model
         return $this->belongsTo(Media::class, 'cover_media_id');
     }
 
+    public function publicPath(?string $slug = null): string
+    {
+        return '/projects/'.($slug ?? $this->slug);
+    }
+
     public function scopeOrdered(Builder $q): void
     {
         $q->orderBy('sort_order')->orderByDesc('published_at');

@@ -21,6 +21,11 @@ trait HasPublishing
                 $model->published_at = now();
             }
         });
+
+        // Any change to publishable content can affect the sitemap.
+        $flush = fn () => cache()->forget('seo.sitemap');
+        static::saved($flush);
+        static::deleted($flush);
     }
 
     public function initializeHasPublishing(): void

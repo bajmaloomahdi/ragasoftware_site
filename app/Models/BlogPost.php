@@ -62,6 +62,11 @@ class BlogPost extends Model
         return $this->belongsToMany(BlogTag::class, 'blog_post_tag');
     }
 
+    public function publicPath(?string $slug = null): string
+    {
+        return '/blog/'.($slug ?? $this->slug);
+    }
+
     public function scopeLatestFirst(Builder $q): void
     {
         $q->orderByDesc('published_at');

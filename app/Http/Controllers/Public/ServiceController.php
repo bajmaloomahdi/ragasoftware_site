@@ -11,6 +11,7 @@ class ServiceController extends Controller
     public function index(): View
     {
         return view('public.services.index', [
+            'seoOverrides' => ['title' => 'خدمات'],
             'services' => Service::published()->forCurrentLocale()->with('image')->ordered()->get(),
         ]);
     }
@@ -24,6 +25,7 @@ class ServiceController extends Controller
 
         return view('public.services.show', [
             'service' => $service,
+            'seoModel' => $service,
             'related' => Service::published()->forCurrentLocale()
                 ->where('id', '!=', $service->id)->ordered()->limit(3)->get(),
         ]);

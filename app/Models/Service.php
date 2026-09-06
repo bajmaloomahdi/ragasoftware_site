@@ -38,6 +38,11 @@ class Service extends Model
         return $this->morphMany(Feature::class, 'featureable')->where('kind', 'feature')->orderBy('sort_order');
     }
 
+    public function publicPath(?string $slug = null): string
+    {
+        return '/services/'.($slug ?? $this->slug);
+    }
+
     public function scopeFeatured(Builder $q): void
     {
         $q->where('featured', true);

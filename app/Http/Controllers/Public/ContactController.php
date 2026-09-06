@@ -18,6 +18,8 @@ class ContactController extends Controller
 
         return view('public.contact', [
             'page' => $page,
+            'seoModel' => $page,
+            'seoOverrides' => $page ? [] : ['title' => 'تماس با ما'],
             'sectionsHtml' => $page ? $renderer->render($page) : null,
         ]);
     }

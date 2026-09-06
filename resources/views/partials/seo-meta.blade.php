@@ -1,28 +1,27 @@
-{{-- Basic SEO meta. Phase 7 expands this with the SeoResolver DTO + JSON-LD. --}}
-@php
-    $seo = $seo ?? null;
-    $metaTitle = $seo?->title ?? ($title ?? null) ?? $site->get('seo.default_title', config('app.name'));
-    $metaDesc = $seo?->description ?? ($description ?? null) ?? $site->get('seo.default_description', '');
-    $canonical = $seo?->canonical ?? url()->current();
-    $robots = $seo?->robots ?? 'index, follow';
-    $ogImage = $seo?->ogImage ?? null;
-@endphp
-<title>{{ $metaTitle }}</title>
-<meta name="description" content="{{ \Illuminate\Support\Str::limit(strip_tags($metaDesc), 160) }}">
-<meta name="robots" content="{{ $robots }}">
-<link rel="canonical" href="{{ $canonical }}">
+{{-- Rendered from layouts/public with the $seo SeoData DTO (see SeoResolver). --}}
+<title>{{ $seo->title }}</title>
+<meta name="description" content="{{ $seo->description }}">
+<meta name="robots" content="{{ $seo->robots }}">
+<link rel="canonical" href="{{ $seo->canonical }}">
 
-<meta property="og:type" content="{{ $ogType ?? 'website' }}">
+<meta property="og:type" content="{{ $seo->ogType }}">
 <meta property="og:site_name" content="{{ $site->get('general.company_name', config('app.name')) }}">
-<meta property="og:title" content="{{ $seo?->ogTitle ?? $metaTitle }}">
-<meta property="og:description" content="{{ \Illuminate\Support\Str::limit(strip_tags($seo?->ogDescription ?? $metaDesc), 200) }}">
-<meta property="og:url" content="{{ $canonical }}">
-@if($ogImage)<meta property="og:image" content="{{ $ogImage }}">@endif
-<meta name="twitter:card" content="{{ $seo?->twitterCard ?? 'summary_large_image' }}">
+<meta property="og:title" content="{{ $seo->ogTitle ?? $seo->title }}">
+<meta property="og:description" content="{{ $seo->ogDescription ?? $seo->description }}">
+<meta property="og:url" content="{{ $seo->canonical }}">
+@if($seo->ogImage)<meta property="og:image" content="{{ url($seo->ogImage) }}">@endif
+<meta property="og:locale" content="{{ config('seo.defaults.locale', 'fa_IR') }}">
+<meta name="twitter:card" content="{{ $seo->twitterCard }}">
+<meta name="twitter:title" content="{{ $seo->ogTitle ?? $seo->title }}">
+<meta name="twitter:description" content="{{ $seo->ogDescription ?? $seo->description }}">
+@if($seo->ogImage)<meta name="twitter:image" content="{{ url($seo->ogImage) }}">@endif
 
 @if($favicon = $site->get('general.favicon_media_id'))
     @php($fav = \App\Models\Media::find($favicon))
     @if($fav)<link rel="icon" href="{{ $fav->url }}">@endif
 @endif
 
+@foreach($seo->jsonLd as $block)
+    <script type="application/ld+json">{!! json_encode($block, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endforeach
 @stack('jsonld')

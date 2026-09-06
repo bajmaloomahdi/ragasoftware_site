@@ -55,6 +55,11 @@ class Product extends Model
         return $this->morphMany(Feature::class, 'featureable')->where('kind', 'advantage')->orderBy('sort_order');
     }
 
+    public function publicPath(?string $slug = null): string
+    {
+        return '/products/'.($slug ?? $this->slug);
+    }
+
     public function scopeFeatured(Builder $q): void
     {
         $q->where('featured', true);

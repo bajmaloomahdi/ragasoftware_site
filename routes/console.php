@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+// Promote scheduled content and regenerate the sitemap.
+Schedule::command('content:publish-scheduled')->everyFiveMinutes()->withoutOverlapping();
+Schedule::command('sitemap:generate')->hourly();

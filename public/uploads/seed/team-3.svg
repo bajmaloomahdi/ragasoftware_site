@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" role="img" aria-label="سارا احمدی">
-  <defs><linearGradient id="gI0PhEw" x1="0" y1="0" x2="1" y2="1">
+  <defs><linearGradient id="gH1c89m" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#0b1b34"/><stop offset="1" stop-color="#12294d"/>
   </linearGradient></defs>
-  <rect width="600" height="600" fill="url(#gI0PhEw)"/>
+  <rect width="600" height="600" fill="url(#gH1c89m)"/>
       <circle cx="600" cy="0" r="220" fill="#2563eb" opacity="0.18"/>
     <circle cx="0" cy="600" r="180" fill="#ffffff" opacity="0.06"/>
     <rect x="8%" y="62%" width="52%" height="8" rx="4" fill="#ffffff" opacity="0.25"/>

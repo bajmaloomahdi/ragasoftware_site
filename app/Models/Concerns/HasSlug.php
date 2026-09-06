@@ -16,6 +16,25 @@ trait HasSlug
 {
     public static function bootHasSlug(): void
     {
+        // Renamed slug on a model with a public URL → keep SEO with a 301.
+        static::updated(function (Model $model) {
+            $column = $model->slugColumn();
+
+            if (! $model->wasChanged($column) || ! method_exists($model, 'publicPath')) {
+                return;
+            }
+
+            $from = $model->publicPath($model->getOriginal($column));
+            $to = $model->publicPath($model->{$column});
+
+            if ($from && $to && $from !== $to) {
+                \App\Models\Redirect::updateOrCreate(
+                    ['from_path' => $from],
+                    ['to_path' => $to, 'status_code' => 301, 'is_active' => true],
+                );
+            }
+        });
+
         static::saving(function (Model $model) {
             /** @var static $model */
             $source = $model->slugSourceColumn();

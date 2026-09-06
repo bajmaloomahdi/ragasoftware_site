@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\SiteSetting;
 use App\Services\Cms\MenuBuilder;
+use App\Services\Seo\SeoResolver;
 use App\Services\Settings\SettingsRepository;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(SettingsRepository::class);
         $this->app->singleton(MenuBuilder::class);
+        $this->app->singleton(SeoResolver::class);
     }
 
     public function boot(): void
@@ -33,14 +35,22 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['layouts.*', 'partials.*', 'public.*', 'sections.*'], function ($view) {
             /** @var SettingsRepository $settings */
             $settings = app(SettingsRepository::class);
-            /** @var MenuBuilder $menus */
-            $menus = app(MenuBuilder::class);
 
             $view->with([
                 'site' => $settings,
-                'siteMenus' => $menus,
+                'siteMenus' => app(MenuBuilder::class),
                 'socialLinks' => $settings->socialLinks(),
             ]);
+        });
+
+        // Build the SeoData DTO for the public layout from an optional
+        // `seoModel` / `seoOverrides` passed by the controller's view().
+        View::composer('layouts.public', function ($view) {
+            $data = $view->getData();
+            $view->with('seo', app(SeoResolver::class)->for(
+                $data['seoModel'] ?? null,
+                $data['seoOverrides'] ?? [],
+            ));
         });
 
         // Keep the settings cache warm-free of stale rows.

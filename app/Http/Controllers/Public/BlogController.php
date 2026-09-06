@@ -33,6 +33,7 @@ class BlogController extends Controller
             ->withQueryString();
 
         return view('public.blog.index', [
+            'seoOverrides' => ['title' => $category?->name ? "وبلاگ — {$category->name}" : 'وبلاگ'],
             'posts' => $posts,
             'categories' => BlogCategory::forCurrentLocale()->withCount(['posts' => fn ($q) => $q->published()])->orderBy('sort_order')->get(),
             'activeCategory' => $category,
@@ -52,6 +53,8 @@ class BlogController extends Controller
 
         return view('public.blog.show', [
             'post' => $post,
+            'seoModel' => $post,
+            'seoOverrides' => ['ogType' => 'article'],
             'related' => BlogPost::published()->forCurrentLocale()
                 ->where('id', '!=', $post->id)
                 ->when($post->category_id, fn ($q) => $q->where('category_id', $post->category_id))

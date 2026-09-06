@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\HandleRedirects;
 use App\Http\Middleware\NoIndex;
 use App\Http\Middleware\SetPublicLocale;
 use Illuminate\Foundation\Application;
@@ -30,7 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
 
         // Public website — server-rendered Blade
-        $middleware->web(append: [
+        $middleware->web(prepend: [
+            HandleRedirects::class,
+        ], append: [
             SetPublicLocale::class,
         ]);
 

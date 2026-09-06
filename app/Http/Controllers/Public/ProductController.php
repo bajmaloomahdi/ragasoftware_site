@@ -12,6 +12,7 @@ class ProductController extends Controller
     public function index(): View
     {
         return view('public.products.index', [
+            'seoOverrides' => ['title' => 'محصولات و راهکارها'],
             'products' => Product::published()->forCurrentLocale()
                 ->with('heroImage', 'category')
                 ->ordered()
@@ -29,6 +30,8 @@ class ProductController extends Controller
 
         return view('public.products.show', [
             'product' => $product,
+            'seoModel' => $product,
+            'seoOverrides' => ['ogType' => 'product'],
             'related' => Product::published()->forCurrentLocale()
                 ->where('id', '!=', $product->id)
                 ->when($product->category_id, fn ($q) => $q->where('category_id', $product->category_id))

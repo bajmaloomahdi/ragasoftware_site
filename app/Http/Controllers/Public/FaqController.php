@@ -19,6 +19,9 @@ class FaqController extends Controller
 
         $uncategorised = Faq::forCurrentLocale()->active()->whereNull('category_id')->get();
 
-        return view('public.faq', compact('categories', 'uncategorised'));
+        return view('public.faq', [
+            'seoOverrides' => ['title' => 'سؤالات متداول'],
+            ...compact('categories', 'uncategorised'),
+        ]);
     }
 }

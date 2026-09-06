@@ -12,17 +12,11 @@ use Illuminate\Support\Str;
  */
 class SeedMedia
 {
-    private static array $cache = [];
-
     public static function make(string $key, string $label, string $variant = 'card'): Media
     {
-        if (isset(self::$cache[$key])) {
-            return self::$cache[$key];
-        }
-
-        $existing = Media::where('original_name', $key.'.svg')->first();
-        if ($existing) {
-            return self::$cache[$key] = $existing;
+        // Keyed on original_name; safe to call repeatedly (idempotent seeder).
+        if ($existing = Media::where('original_name', $key.'.svg')->first()) {
+            return $existing;
         }
 
         [$w, $h] = match ($variant) {
@@ -40,7 +34,7 @@ class SeedMedia
         @mkdir(dirname($abs), 0775, true);
         file_put_contents($abs, $svg);
 
-        return self::$cache[$key] = Media::create([
+        return Media::create([
             'disk' => 'uploads',
             'path' => $rel,
             'filename' => "{$key}.svg",
