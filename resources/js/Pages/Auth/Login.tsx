@@ -9,7 +9,7 @@ export default function Login() {
         remember: false,
     });
 
-    const submit = () => post(route('login.store'));
+    const submit = () => post(route('admin.login.store'));
 
     return (
         <div

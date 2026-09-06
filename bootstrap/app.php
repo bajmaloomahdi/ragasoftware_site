@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\NoIndex;
 use App\Http\Middleware\SetPublicLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(fn () => route('admin.login'));
+        $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
+
         // Public website — server-rendered Blade
         $middleware->web(append: [
             SetPublicLocale::class,
@@ -28,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Admin panel — Inertia + React
         $middleware->group('admin', [
             'web',
+            NoIndex::class,
             HandleInertiaRequests::class,
             Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);

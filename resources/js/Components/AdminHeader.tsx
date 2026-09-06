@@ -51,7 +51,7 @@ export default function AdminHeader({
                                 key: 'logout',
                                 icon: <LogoutOutlined />,
                                 label: 'خروج',
-                                onClick: () => router.post(route('logout')),
+                                onClick: () => router.post(route('admin.logout')),
                             },
                         ],
                     }}
