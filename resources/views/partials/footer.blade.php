@@ -1,13 +1,13 @@
 @php
     $companyName = $site->get('general.company_name', config('app.name'));
-    $logoLight = $site->get('general.logo_light_media_id') ? \App\Models\Media::find($site->get('general.logo_light_media_id')) : null;
+    $logoLight = media($site->get('general.logo_light_media_id')) ?? media($site->get('general.logo_media_id'));
     $cols = [
         ['title' => $siteMenus->label('footer_1') ?? 'محصولات', 'items' => $siteMenus->location('footer_1')],
         ['title' => $siteMenus->label('footer_2') ?? 'شرکت', 'items' => $siteMenus->location('footer_2')],
         ['title' => $siteMenus->label('footer_3') ?? 'منابع', 'items' => $siteMenus->location('footer_3')],
     ];
     $legal = $siteMenus->location('legal');
-    $year = (int) date('Y') - 621;
+    $year = jdate(now(), 'Y');
 @endphp
 
 <footer class="mt-auto bg-navy-800 text-navy-100">

@@ -89,7 +89,7 @@ class SeoResolver
             return null;
         }
 
-        return Media::find($mediaId)?->url;
+        return media($mediaId)?->url;
     }
 
     private function fallbackImage(?Model $model): ?string

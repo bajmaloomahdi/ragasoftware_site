@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="220" height="90" viewBox="0 0 220 90" role="img" aria-label="فروشگاه‌های زنجیره‌ای هفت">
-  <defs><linearGradient id="g2NbdGV" x1="0" y1="0" x2="1" y2="1">
+  <defs><linearGradient id="g9hZamV" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#12294d"/><stop offset="1" stop-color="#1b3785"/>
   </linearGradient></defs>
-  <rect width="220" height="90" fill="url(#g2NbdGV)"/>
+  <rect width="220" height="90" fill="url(#g9hZamV)"/>
   
   <text x="8%" y="38%" fill="#ffffff" font-family="Vazirmatn, Tahoma, sans-serif" font-size="26" font-weight="700">فروشگاه‌های زنجیره‌ای هفت</text>
   <text x="8%" y="46%" fill="#06b6d4" font-family="Vazirmatn, Tahoma, sans-serif" font-size="18" font-weight="600">RagaSoftware</text>

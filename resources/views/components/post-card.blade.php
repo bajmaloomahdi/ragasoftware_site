@@ -9,9 +9,7 @@
             @if($post->category)
                 <span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-600">{{ $post->category->name }}</span>
             @endif
-            <time datetime="{{ optional($post->published_at)->toIso8601String() }}">
-                {{ optional($post->published_at)->translatedFormat('j F Y') }}
-            </time>
+            <time datetime="{{ jdate_iso($post->published_at) }}">{{ jdate($post->published_at) }}</time>
         </div>
         <h3 class="text-base font-bold leading-7 text-navy-900">
             <a href="{{ route('blog.show', $post->slug) }}" class="after:absolute after:inset-0">{{ $post->title }}</a>

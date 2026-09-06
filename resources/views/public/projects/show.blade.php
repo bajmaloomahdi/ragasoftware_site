@@ -23,7 +23,7 @@
             @if($project->completed_on || $project->project_url)
                 <dl class="mt-6 flex flex-wrap gap-x-10 gap-y-2 border-y border-mist-200 py-4 text-sm">
                     @if($project->completed_on)
-                        <div><dt class="text-navy-400">تاریخ اجرا</dt><dd class="font-medium text-navy-800">{{ $project->completed_on->translatedFormat('F Y') }}</dd></div>
+                        <div><dt class="text-navy-400">تاریخ اجرا</dt><dd class="font-medium text-navy-800">{{ jdate($project->completed_on, 'F Y') }}</dd></div>
                     @endif
                     @if($project->project_url)
                         <div><dt class="text-navy-400">لینک</dt><dd><a href="{{ $project->project_url }}" target="_blank" rel="noopener" class="font-medium text-brand-600" dir="ltr">{{ $project->project_url }}</a></dd></div>

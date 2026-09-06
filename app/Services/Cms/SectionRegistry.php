@@ -92,9 +92,7 @@ class SectionRegistry
         $data = ['section' => $section, 'settings' => $settings, 'type' => $section->type];
 
         // resolve single + multiple media references anywhere in settings
-        $data['media'] = isset($settings['media_id'])
-            ? \App\Models\Media::find($settings['media_id'])
-            : null;
+        $data['media'] = isset($settings['media_id']) ? media($settings['media_id']) : null;
 
         if (! empty($settings['media_ids']) && is_array($settings['media_ids'])) {
             $data['medias'] = \App\Models\Media::whereIn('id', $settings['media_ids'])->get()
@@ -106,10 +104,10 @@ class SectionRegistry
         $data['items'] = match ($def['source'] ?? null) {
             'products' => self::resolveProducts($settings, $limit),
             'services' => self::resolveServices($settings, $limit),
-            'projects' => \App\Models\Project::published()->forCurrentLocale()->ordered()->limit($limit)->get(),
-            'customers' => \App\Models\Customer::forCurrentLocale()->active()->get(),
+            'projects' => \App\Models\Project::published()->forCurrentLocale()->with('cover')->ordered()->limit($limit)->get(),
+            'customers' => \App\Models\Customer::forCurrentLocale()->active()->with('logo')->get(),
             'testimonials' => \App\Models\Testimonial::forCurrentLocale()->active()->with('customer')->limit($limit)->get(),
-            'team' => \App\Models\TeamMember::forCurrentLocale()->active()->get(),
+            'team' => \App\Models\TeamMember::forCurrentLocale()->active()->with('photo')->get(),
             'blog' => self::resolvePosts($settings, $limit),
             'faqs' => self::resolveFaqs($settings, $limit),
             default => collect(),

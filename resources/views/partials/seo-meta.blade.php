@@ -16,9 +16,8 @@
 <meta name="twitter:description" content="{{ $seo->ogDescription ?? $seo->description }}">
 @if($seo->ogImage)<meta name="twitter:image" content="{{ url($seo->ogImage) }}">@endif
 
-@if($favicon = $site->get('general.favicon_media_id'))
-    @php($fav = \App\Models\Media::find($favicon))
-    @if($fav)<link rel="icon" href="{{ $fav->url }}">@endif
+@if($fav = media($site->get('general.favicon_media_id')))
+    <link rel="icon" href="{{ $fav->url }}">
 @endif
 
 @foreach($seo->jsonLd as $block)

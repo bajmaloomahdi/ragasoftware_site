@@ -1,6 +1,5 @@
 @php
-    $logo = $site->get('general.logo_media_id') ? \App\Models\Media::find($site->get('general.logo_media_id')) : null;
-    $logoLight = $site->get('general.logo_light_media_id') ? \App\Models\Media::find($site->get('general.logo_light_media_id')) : null;
+    $logo = media($site->get('general.logo_media_id'));
     $companyName = $site->get('general.company_name', config('app.name'));
     $nav = $siteMenus->location('header');
 @endphp

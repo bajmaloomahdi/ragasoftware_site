@@ -19,7 +19,7 @@
                 <h1 class="text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl">{{ $post->title }}</h1>
                 <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-navy-500">
                     @if($post->author)<span>{{ $post->author->name }}</span>@endif
-                    <time datetime="{{ $post->published_at?->toIso8601String() }}">{{ $post->published_at?->translatedFormat('j F Y') }}</time>
+                    <time datetime="{{ jdate_iso($post->published_at) }}">{{ jdate($post->published_at) }}</time>
                     <span>{{ $post->reading_minutes ?? 3 }} دقیقه مطالعه</span>
                 </div>
             </header>
