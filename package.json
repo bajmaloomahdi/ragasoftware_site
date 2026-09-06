@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "types": "tsc --noEmit"
     },
     "devDependencies": {
         "@alpinejs/collapse": "^3.17.1",

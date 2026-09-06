@@ -42,7 +42,12 @@ class Product extends Model
 
     public function features(): HasMany
     {
-        return $this->hasMany(ProductFeature::class)->where('is_active', true)->orderBy('sort_order');
+        return $this->hasMany(ProductFeature::class)->orderBy('sort_order');
+    }
+
+    public function activeFeatures(): HasMany
+    {
+        return $this->features()->where('is_active', true);
     }
 
     public function advantages(): MorphMany

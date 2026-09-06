@@ -25,7 +25,7 @@ export default function MediaPicker({ open, multiple = false, onClose, onSelect 
     const [folder, setFolder] = useState<number | 0>(0);
     const [search, setSearch] = useState('');
     const [picked, setPicked] = useState<Record<number, MediaItem>>({});
-    const debounce = useRef<number>();
+    const debounce = useRef<number | undefined>(undefined);
 
     const load = useCallback(async () => {
         setLoading(true);

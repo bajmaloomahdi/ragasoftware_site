@@ -13,13 +13,14 @@ import { adminTheme } from './theme';
 dayjs.locale('fa');
 
 const appName = import.meta.env.VITE_APP_NAME || 'RagaSoftware';
+const pages = import.meta.glob('./Pages/**/*.tsx');
 
 createInertiaApp({
     title: (title) => (title ? `${title} | مدیریت ${appName}` : `مدیریت ${appName}`),
-    resolve: (name) =>
-        resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.tsx`, pages as any),
     setup({ el, App, props }) {
-        createRoot(el).render(
+        createRoot(el!).render(
             <React.StrictMode>
                 <ConfigProvider direction="rtl" locale={faIR} theme={adminTheme}>
                     <AntApp>
