@@ -58,7 +58,7 @@ class SeedMedia
             ['#0b1b34', '#1d4fd0', '#38bdf8'],
         ];
         [$c1, $c2, $accent] = $palettes[abs(crc32($label)) % count($palettes)];
-        $id = Str::random(6);
+        $id = substr(md5($label.$variant), 0, 6); // deterministic → no git churn on reseed
         $safe = htmlspecialchars($label, ENT_QUOTES);
 
         if ($variant === 'logo') {

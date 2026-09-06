@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="امنیت داده در نرم‌افزارهای سازمانی؛ چه باید بدانیم">
-  <defs><linearGradient id="ghh3gbb" x1="0" y1="0" x2="1" y2="1">
+  <defs><linearGradient id="gf42a8f" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#0b1b34"/><stop offset="1" stop-color="#1d4fd0"/>
   </linearGradient></defs>
-  <rect width="1200" height="675" fill="url(#ghh3gbb)"/>
+  <rect width="1200" height="675" fill="url(#gf42a8f)"/>
       <circle cx="1200" cy="0" r="220" fill="#38bdf8" opacity="0.18"/>
     <circle cx="0" cy="675" r="180" fill="#ffffff" opacity="0.06"/>
     <rect x="8%" y="62%" width="52%" height="8" rx="4" fill="#ffffff" opacity="0.25"/>

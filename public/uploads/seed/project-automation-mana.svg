@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="اتوماسیون اداری هلدینگ مانا">
-  <defs><linearGradient id="g1zzNom" x1="0" y1="0" x2="1" y2="1">
+  <defs><linearGradient id="g494333" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#12294d"/><stop offset="1" stop-color="#1b3785"/>
   </linearGradient></defs>
-  <rect width="1200" height="675" fill="url(#g1zzNom)"/>
+  <rect width="1200" height="675" fill="url(#g494333)"/>
       <circle cx="1200" cy="0" r="220" fill="#06b6d4" opacity="0.18"/>
     <circle cx="0" cy="675" r="180" fill="#ffffff" opacity="0.06"/>
     <rect x="8%" y="62%" width="52%" height="8" rx="4" fill="#ffffff" opacity="0.25"/>
