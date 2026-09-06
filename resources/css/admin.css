@@ -1,0 +1,29 @@
+/* Admin panel base styles — Ant Design does the heavy lifting via CSS-in-JS.
+   Kept intentionally separate from the public site's Tailwind bundle. */
+@import '@fontsource/vazirmatn/400.css';
+@import '@fontsource/vazirmatn/500.css';
+@import '@fontsource/vazirmatn/600.css';
+@import '@fontsource/vazirmatn/700.css';
+
+* {
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+}
+
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: #f0f2f5;
+}
+
+/* Inertia progress bar tint */
+#nprogress .bar {
+    background: #2563eb !important;
+}
+#nprogress .peg {
+    box-shadow: 0 0 10px #2563eb, 0 0 5px #2563eb !important;
+}

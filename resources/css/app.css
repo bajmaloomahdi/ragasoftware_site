@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+/* Self-hosted Persian typeface (fingerprinted by Vite) */
+@import '@fontsource/vazirmatn/400.css';
+@import '@fontsource/vazirmatn/500.css';
+@import '@fontsource/vazirmatn/600.css';
+@import '@fontsource/vazirmatn/700.css';
+@import '@fontsource/vazirmatn/800.css';
+
+@source '../views/**/*.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/* ------------------------------------------------------------------ */
+/*  RagaSoftware design system — Modern / Premium / Enterprise / Minimal
+/*  Palette: Navy · White · Light-gray · Blue/Cyan accent
+/* ------------------------------------------------------------------ */
+@theme {
+    --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* Brand navy */
+    --color-navy-50: #eef2f8;
+    --color-navy-100: #d5deec;
+    --color-navy-200: #adbfd9;
+    --color-navy-300: #7f97bf;
+    --color-navy-400: #4f6a9c;
+    --color-navy-500: #2f4a7a;
+    --color-navy-600: #1d3560;
+    --color-navy-700: #12294d;
+    --color-navy-800: #0b1b34;
+    --color-navy-900: #071324;
+    --color-navy-950: #040b16;
+
+    /* Accent — blue */
+    --color-brand-50: #eff5ff;
+    --color-brand-100: #dbe8fe;
+    --color-brand-200: #bfd6fe;
+    --color-brand-300: #93b8fd;
+    --color-brand-400: #6091fa;
+    --color-brand-500: #2563eb;
+    --color-brand-600: #1d4fd0;
+    --color-brand-700: #1a3fa8;
+    --color-brand-800: #1b3785;
+    --color-brand-900: #1b3269;
+
+    /* Accent — cyan */
+    --color-cyan-500: #06b6d4;
+    --color-cyan-600: #0891b2;
+
+    /* Neutral surfaces */
+    --color-mist-50: #f7f9fc;
+    --color-mist-100: #f5f7fa;
+    --color-mist-200: #e9edf3;
+    --color-mist-300: #d7dee8;
+
+    --radius-card: 0.9rem;
+    --shadow-card: 0 1px 2px rgb(11 27 52 / 0.04), 0 8px 24px -12px rgb(11 27 52 / 0.12);
+
+    --breakpoint-xs: 22rem;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        @apply bg-white text-navy-800 antialiased;
+        font-feature-settings: 'ss01';
+        text-wrap: pretty;
+    }
+
+    /* Logical-property friendly defaults for RTL */
+    h1, h2, h3, h4 {
+        @apply font-bold text-navy-900;
+        text-wrap: balance;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-brand-500;
+    }
+
+    ::selection {
+        background: var(--color-brand-500);
+        color: #fff;
+    }
+}
+
+@layer components {
+    .container-site {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .section-pad {
+        @apply py-14 sm:py-20 lg:py-28;
+    }
+
+    .prose-fa {
+        @apply leading-8 text-navy-700;
+    }
+    .prose-fa :where(h2) { @apply mt-10 mb-4 text-2xl; }
+    .prose-fa :where(h3) { @apply mt-8 mb-3 text-xl; }
+    .prose-fa :where(p) { @apply my-4; }
+    .prose-fa :where(ul) { @apply my-4 list-disc space-y-2 pr-6; }
+    .prose-fa :where(ol) { @apply my-4 list-decimal space-y-2 pr-6; }
+    .prose-fa :where(a) { @apply text-brand-600 underline underline-offset-4; }
+    .prose-fa :where(img) { @apply my-6 rounded-xl; }
+    .prose-fa :where(blockquote) { @apply my-6 border-r-4 border-brand-200 pr-4 text-navy-600; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
