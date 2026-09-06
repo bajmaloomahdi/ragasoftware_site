@@ -54,7 +54,8 @@ return [
         'uploads' => [
             'driver' => 'local',
             'root' => public_path('uploads'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/uploads',
+            // Root-relative so asset URLs work on any host/port and behind a CDN.
+            'url' => '/uploads',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
