@@ -21,6 +21,8 @@ class SettingsRepository
     /** @var array<string, mixed>|null */
     private ?array $cache = null;
 
+    private ?Collection $socialCache = null;
+
     /** @return array<string, mixed> */
     public function all(): array
     {
@@ -66,18 +68,16 @@ class SettingsRepository
         $this->flush();
     }
 
-    /** @return Collection<int, SocialLink> */
+    /** @return Collection<int, SocialLink> — memoised per request (models are never persisted to cache) */
     public function socialLinks(): Collection
     {
-        return cache()->rememberForever(
-            self::SOCIAL_KEY,
-            fn () => SocialLink::active()->get(),
-        );
+        return $this->socialCache ??= SocialLink::active()->get();
     }
 
     public function flush(): void
     {
         $this->cache = null;
+        $this->socialCache = null;
         cache()->forget(self::CACHE_KEY);
         cache()->forget(self::SOCIAL_KEY);
     }

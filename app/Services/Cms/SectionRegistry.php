@@ -78,6 +78,92 @@ class SectionRegistry
         return self::sanitizeAgainst($def['fields'] ?? [], $settings);
     }
 
+    /**
+     * Hydrate a stored section's settings into ready-to-render view data:
+     * resolve media ids to Media models and, for data-backed sections
+     * (products_grid, blog_latest, …), pull the actual published records.
+     *
+     * @return array<string, mixed>
+     */
+    public static function resolve(\App\Models\PageSection $section): array
+    {
+        $def = self::get($section->type) ?? [];
+        $settings = $section->settings ?? [];
+        $data = ['section' => $section, 'settings' => $settings, 'type' => $section->type];
+
+        // resolve single + multiple media references anywhere in settings
+        $data['media'] = isset($settings['media_id'])
+            ? \App\Models\Media::find($settings['media_id'])
+            : null;
+
+        if (! empty($settings['media_ids']) && is_array($settings['media_ids'])) {
+            $data['medias'] = \App\Models\Media::whereIn('id', $settings['media_ids'])->get()
+                ->sortBy(fn ($m) => array_search($m->id, $settings['media_ids']))->values();
+        }
+
+        $limit = (int) ($settings['limit'] ?? 6) ?: 6;
+
+        $data['items'] = match ($def['source'] ?? null) {
+            'products' => self::resolveProducts($settings, $limit),
+            'services' => self::resolveServices($settings, $limit),
+            'projects' => \App\Models\Project::published()->forCurrentLocale()->ordered()->limit($limit)->get(),
+            'customers' => \App\Models\Customer::forCurrentLocale()->active()->get(),
+            'testimonials' => \App\Models\Testimonial::forCurrentLocale()->active()->with('customer')->limit($limit)->get(),
+            'team' => \App\Models\TeamMember::forCurrentLocale()->active()->get(),
+            'blog' => self::resolvePosts($settings, $limit),
+            'faqs' => self::resolveFaqs($settings, $limit),
+            default => collect(),
+        };
+
+        return $data;
+    }
+
+    private static function resolveProducts(array $s, int $limit)
+    {
+        $q = \App\Models\Product::published()->forCurrentLocale()->with('heroImage')->ordered();
+
+        return match ($s['mode'] ?? 'featured') {
+            'all' => $q->limit($limit)->get(),
+            'custom' => ! empty($s['item_ids'])
+                ? \App\Models\Product::published()->forCurrentLocale()->with('heroImage')
+                    ->where(fn ($q) => $q->whereIn('slug', $s['item_ids'])->orWhereIn('id', $s['item_ids']))->get()
+                : collect(),
+            default => $q->featured()->limit($limit)->get(),
+        };
+    }
+
+    private static function resolveServices(array $s, int $limit)
+    {
+        $q = \App\Models\Service::published()->forCurrentLocale()->with('image')->ordered();
+
+        return match ($s['mode'] ?? 'featured') {
+            'all' => $q->limit($limit)->get(),
+            'custom' => ! empty($s['item_ids'])
+                ? \App\Models\Service::published()->forCurrentLocale()
+                    ->where(fn ($q) => $q->whereIn('slug', $s['item_ids'])->orWhereIn('id', $s['item_ids']))->get()
+                : collect(),
+            default => $q->featured()->limit($limit)->get(),
+        };
+    }
+
+    private static function resolvePosts(array $s, int $limit)
+    {
+        return \App\Models\BlogPost::published()->forCurrentLocale()
+            ->with(['cover', 'category', 'author'])
+            ->when(! empty($s['category_id']), fn ($q) => $q->where('category_id', $s['category_id']))
+            ->latestFirst()
+            ->limit($limit)
+            ->get();
+    }
+
+    private static function resolveFaqs(array $s, int $limit)
+    {
+        return \App\Models\Faq::forCurrentLocale()->active()
+            ->when(! empty($s['category_id']), fn ($q) => $q->where('category_id', $s['category_id']))
+            ->limit($limit)
+            ->get();
+    }
+
     private static function sanitizeAgainst(array $fields, array $input): array
     {
         $clean = [];

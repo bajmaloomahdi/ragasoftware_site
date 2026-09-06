@@ -22,12 +22,17 @@ class MenuBuilder
     /** @return array<int, array<string, mixed>> */
     public function location(string $location): array
     {
-        return $this->tree()[$location] ?? [];
+        return $this->tree()[$location]['items'] ?? [];
+    }
+
+    public function label(string $location): ?string
+    {
+        return $this->tree()[$location]['name'] ?? null;
     }
 
     public function has(string $location): bool
     {
-        return ! empty($this->tree()[$location]);
+        return ! empty($this->tree()[$location]['items']);
     }
 
     /** @return array<string, array> */
@@ -37,7 +42,10 @@ class MenuBuilder
             $menus = NavigationMenu::with(['items' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')])->get();
 
             return $menus->mapWithKeys(fn (NavigationMenu $menu) => [
-                $menu->location => $this->buildNodes($menu->items, null),
+                $menu->location => [
+                    'name' => $menu->name,
+                    'items' => $this->buildNodes($menu->items, null),
+                ],
             ])->all();
         });
     }

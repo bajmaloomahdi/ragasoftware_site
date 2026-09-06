@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('admin')
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
+
+            // Dynamic CMS page catch-all — registered dead last so it never
+            // shadows a fixed route (including /admin).
+            Illuminate\Support\Facades\Route::middleware('web')
+                ->group(base_path('routes/pages.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
