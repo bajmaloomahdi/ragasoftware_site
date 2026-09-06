@@ -60,9 +60,20 @@ class SeedMedia
         [$c1, $c2, $accent] = $palettes[abs(crc32($label)) % count($palettes)];
         $id = Str::random(6);
         $safe = htmlspecialchars($label, ENT_QUOTES);
-        $fontSize = $variant === 'logo' ? 26 : ($variant === 'square' ? 34 : 44);
 
-        $decor = $variant === 'logo' ? '' : <<<SVG
+        if ($variant === 'logo') {
+            return <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" width="{$w}" height="{$h}" viewBox="0 0 {$w} {$h}" role="img" aria-label="{$safe}">
+  <rect width="{$w}" height="{$h}" rx="12" fill="{$c1}"/>
+  <rect x="14" y="24" width="42" height="42" rx="10" fill="{$accent}"/>
+  <text x="66" y="55" fill="#ffffff" font-family="Vazirmatn, Tahoma, sans-serif" font-size="30" font-weight="800">{$safe}</text>
+</svg>
+SVG;
+        }
+
+        $fontSize = $variant === 'square' ? 34 : 44;
+
+        $decor = <<<SVG
             <circle cx="{$w}" cy="0" r="220" fill="{$accent}" opacity="0.18"/>
             <circle cx="0" cy="{$h}" r="180" fill="#ffffff" opacity="0.06"/>
             <rect x="8%" y="62%" width="52%" height="8" rx="4" fill="#ffffff" opacity="0.25"/>
