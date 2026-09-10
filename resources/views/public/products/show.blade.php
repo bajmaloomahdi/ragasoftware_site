@@ -84,7 +84,7 @@
 @push('jsonld')
 <script type="application/ld+json">
 {!! json_encode(array_filter([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@type' => 'Product',
     'name' => $product->title,
     'description' => \Illuminate\Support\Str::limit(strip_tags((string) ($product->summary ?: $product->body)), 300),

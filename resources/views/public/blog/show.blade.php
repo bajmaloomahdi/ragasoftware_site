@@ -57,7 +57,7 @@
 @push('jsonld')
 <script type="application/ld+json">
 {!! json_encode(array_filter([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@type' => 'Article',
     'headline' => $post->title,
     'description' => \Illuminate\Support\Str::limit(strip_tags((string) $post->excerpt), 200),

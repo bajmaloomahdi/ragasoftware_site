@@ -54,7 +54,7 @@
 @if($categories->isNotEmpty() || $uncategorised->isNotEmpty())
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@type' => 'FAQPage',
     'mainEntity' => $categories->flatMap->faqs->concat($uncategorised)->map(fn ($f) => [
         '@type' => 'Question',

@@ -1,5 +1,29 @@
 ---
+# cPanel Git™ deployment.
+#
+# Runs ONLY when you click "Deploy HEAD Commit" in
+# cPanel → Git Version Control (a plain `git pull` does NOT run these tasks).
+#
+# Route A: vendor/ is NOT in the repo — production dependencies are installed
+# on the server by bin/deploy.sh (which auto-detects composer + php).
+#
+# The domain's DocumentRoot MUST point at:
+#     /home/ragasoftwareir/public_html/public
+#
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/ragasoftwareir/public_html/
-    - /bin/cp -R * $DEPLOYPATH
+    - export DEPLOYPATH=/home/ragasoftwareir/public_html
+
+    # 1) Wipe the stale compiled front-end so renamed hashed asset files
+    #    (a redesign changes them) can never linger and shadow the new manifest.
+    - /bin/rm -rf $DEPLOYPATH/public/build
+
+    # 2) Sync the repo. Small now (no vendor/), so `cp` finishes instantly and
+    #    cannot time out mid-copy. `*` skips dotfiles (.git stays out);
+    #    public/.htaccess is copied because it lives inside public/.
+    #    cp merges into existing dirs — user uploads in public/uploads/** and the
+    #    host .env are preserved; public/build was just removed so it lands clean.
+    - /bin/cp -Rf * $DEPLOYPATH/
+
+    # 3) Install prod dependencies + rebuild caches (auto-detects composer/php).
+    - /bin/bash $DEPLOYPATH/bin/deploy.sh

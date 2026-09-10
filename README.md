@@ -102,12 +102,25 @@ npm run build            # خروجی در public/build/  (کامیت می‌ش�
 npm run types            # بررسی TypeScript
 ```
 
-`public/build/` **عمداً در گیت کامیت می‌شود** تا استقرار روی هاست فقط `git pull` باشد و نیازی به Node روی سرور نباشد.
+`public/build/` **عمداً در گیت کامیت می‌شود** تا نیازی به Node روی سرور نباشد.
 پس از هر تغییر در `resources/js` یا `resources/css`، `npm run build` را اجرا و خروجی را همراه سورس کامیت کنید.
+
+> `vendor/` در گیت **نیست**؛ روی سرور با `composer install --no-dev` نصب می‌شود.
 
 ---
 
 ## ۵) استقرار روی هاست اشتراکی PHP + MySQL
+
+### خودکار (cPanel Git)
+فایل `.cpanel.yml` در ریشه‌ی پروژه هست. در cPanel → Git Version Control پس از
+«Update from Remote»، دکمه‌ی **Deploy HEAD Commit** را بزنید. این تسک‌ها اجرا می‌شوند:
+`public/build` کهنه پاک می‌شود → کل ریپو کپی می‌شود (بدون `vendor/`) →
+`composer install --no-dev --optimize-autoloader` → بازسازی کش‌ها.
+Document Root دامنه باید روی `public_html/public` باشد.
+پیش‌نیاز: در محیط دیپلوی هاست `composer` و `php` در دسترس باشند
+(اگر نبود، مسیر آن‌ها را در `.cpanel.yml` تنظیم کنید یا یک‌بار دستی `composer install` بزنید).
+
+### دستی
 
 ```bash
 # روی سرور:

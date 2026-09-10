@@ -30,7 +30,7 @@
 @push('jsonld')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@type' => 'WebPage',
     'name' => $page->seo?->meta_title ?: $page->title,
     'description' => \Illuminate\Support\Str::limit(strip_tags((string) ($page->seo?->meta_description ?: $page->excerpt)), 200),

@@ -21,7 +21,7 @@
 @push('jsonld')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@type' => 'BreadcrumbList',
     'itemListElement' => collect($items)->prepend(['label' => 'خانه', 'url' => route('home')])
         ->values()

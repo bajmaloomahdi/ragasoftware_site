@@ -38,7 +38,7 @@
 @push('jsonld')
 <script type="application/ld+json">
 {!! json_encode(array_filter([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@type' => 'Organization',
     'name' => $site->get('general.company_name', config('app.name')),
     'url' => url('/'),
