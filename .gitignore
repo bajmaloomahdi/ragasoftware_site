@@ -31,3 +31,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Local DB dumps — never commit
+/ragasoftware.sql
+/*.sql

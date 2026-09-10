@@ -2,16 +2,16 @@
 {{-- $items: [ ['label' => '...', 'url' => '...'], ... ] ; last item is current --}}
 
 @if(count($items))
-<nav aria-label="مسیر" class="border-b border-mist-200 bg-mist-50">
-    <ol class="container-site flex flex-wrap items-center gap-2 py-3 text-sm text-navy-500">
+<nav aria-label="مسیر" class="border-b border-paper-200 bg-paper-50">
+    <ol class="container-site flex flex-wrap items-center gap-2 py-3 text-sm text-ink-500">
         <li><a href="{{ route('home') }}" class="hover:text-brand-600">خانه</a></li>
         @foreach($items as $i => $item)
-            <li aria-hidden="true" class="text-navy-300">/</li>
+            <li aria-hidden="true" class="text-ink-300">/</li>
             <li>
                 @if(!$loop->last && !empty($item['url']))
                     <a href="{{ $item['url'] }}" class="hover:text-brand-600">{{ $item['label'] }}</a>
                 @else
-                    <span class="font-medium text-navy-700" aria-current="page">{{ $item['label'] }}</span>
+                    <span class="font-medium text-ink-700" aria-current="page">{{ $item['label'] }}</span>
                 @endif
             </li>
         @endforeach

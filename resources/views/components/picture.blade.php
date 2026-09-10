@@ -35,7 +35,7 @@
         </picture>
     @endif
 @else
-    <div {{ $attributes->merge(['class' => trim($class.' grid place-items-center bg-mist-100 text-navy-300')]) }} style="{{ $style ?: 'aspect-ratio: 16/10;' }}">
+    <div {{ $attributes->merge(['class' => trim($class.' grid place-items-center bg-paper-100 text-ink-300')]) }} style="{{ $style ?: 'aspect-ratio: 16/10;' }}">
         <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M3 16l5-5 4 4 3-3 6 6M3 6h18v12H3z"/></svg>
     </div>
 @endif

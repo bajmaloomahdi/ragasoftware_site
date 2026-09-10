@@ -9,7 +9,7 @@
 
     <div class="container-site section-pad">
         <div class="max-w-2xl">
-            <h1 class="text-3xl font-extrabold text-navy-900 sm:text-4xl">محصولات و راهکارهای راگا سافت‌ور</h1>
+            <h1 class="text-3xl font-extrabold text-ink-900 sm:text-4xl">محصولات و راهکارهای راگا سافت‌ور</h1>
             <p class="mt-4 lead">
                 مجموعه نرم‌افزارهای یکپارچه راگا برای پوشش نیازهای مدیریت سازمان، ارتباط با مشتری،
                 اتوماسیون فرایندها و تصمیم‌گیری مبتنی بر داده.
@@ -17,7 +17,7 @@
         </div>
 
         @if($products->isEmpty())
-            <p class="mt-12 text-navy-500">به‌زودی محصولات اضافه می‌شوند.</p>
+            <p class="mt-12 text-ink-500">به‌زودی محصولات اضافه می‌شوند.</p>
         @else
             <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($products as $product)

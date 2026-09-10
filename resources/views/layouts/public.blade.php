@@ -28,7 +28,7 @@
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtm }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     @endif
 
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded focus:bg-navy-800 focus:px-4 focus:py-2 focus:text-white">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded focus:bg-ink-800 focus:px-4 focus:py-2 focus:text-white">
         رفتن به محتوای اصلی
     </a>
 

@@ -11,49 +11,56 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 /* ------------------------------------------------------------------ */
-/*  RagaSoftware design system — Modern / Premium / Enterprise / Minimal
-/*  Palette: Navy · White · Light-gray · Blue/Cyan accent
+/*  RagaSoftware — Bright / Modern / Premium / Tech design system
+/*  Base: white + very-light cool grays · Accent: Indigo → Violet
 /* ------------------------------------------------------------------ */
 @theme {
     --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-    /* Brand navy */
-    --color-navy-50: #eef2f8;
-    --color-navy-100: #d5deec;
-    --color-navy-200: #adbfd9;
-    --color-navy-300: #7f97bf;
-    --color-navy-400: #4f6a9c;
-    --color-navy-500: #2f4a7a;
-    --color-navy-600: #1d3560;
-    --color-navy-700: #12294d;
-    --color-navy-800: #0b1b34;
-    --color-navy-900: #071324;
-    --color-navy-950: #040b16;
+    /* Ink — neutral cool slate for text + rare dark surfaces (no navy) */
+    --color-ink-50: #f6f7f9;
+    --color-ink-100: #eceef2;
+    --color-ink-200: #dcdfe7;
+    --color-ink-300: #bcc1cd;
+    --color-ink-400: #8b909f;
+    --color-ink-500: #646a7b;
+    --color-ink-600: #4b5060;
+    --color-ink-700: #383d4b;
+    --color-ink-800: #23262f;
+    --color-ink-900: #14161d;
+    --color-ink-950: #0b0c11;
 
-    /* Accent — blue */
-    --color-brand-50: #eff5ff;
-    --color-brand-100: #dbe8fe;
-    --color-brand-200: #bfd6fe;
-    --color-brand-300: #93b8fd;
-    --color-brand-400: #6091fa;
-    --color-brand-500: #2563eb;
-    --color-brand-600: #1d4fd0;
-    --color-brand-700: #1a3fa8;
-    --color-brand-800: #1b3785;
-    --color-brand-900: #1b3269;
+    /* Paper — near-white surfaces with the faintest lilac tint */
+    --color-paper-50: #faf9fd;
+    --color-paper-100: #f4f3f9;
+    --color-paper-200: #e8e6f1;
+    --color-paper-300: #d9d6e6;
 
-    /* Accent — cyan */
-    --color-cyan-500: #06b6d4;
-    --color-cyan-600: #0891b2;
+    /* Brand — Indigo (primary accent) */
+    --color-brand-50: #eef1ff;
+    --color-brand-100: #e1e4ff;
+    --color-brand-200: #c7ccfe;
+    --color-brand-300: #a4a8fb;
+    --color-brand-400: #8384f6;
+    --color-brand-500: #6366f1;
+    --color-brand-600: #574fe6;
+    --color-brand-700: #4a3fca;
+    --color-brand-800: #3d36a2;
+    --color-brand-900: #363380;
 
-    /* Neutral surfaces */
-    --color-mist-50: #f7f9fc;
-    --color-mist-100: #f5f7fa;
-    --color-mist-200: #e9edf3;
-    --color-mist-300: #d7dee8;
+    /* Iris — Violet (secondary accent, mainly gradients + glows) */
+    --color-iris-50: #fbf4ff;
+    --color-iris-100: #f5e8ff;
+    --color-iris-200: #ecd4ff;
+    --color-iris-300: #ddb4fe;
+    --color-iris-400: #c884fb;
+    --color-iris-500: #a855f7;
+    --color-iris-600: #9234ea;
+    --color-iris-700: #7a28c8;
 
-    --radius-card: 0.9rem;
-    --shadow-card: 0 1px 2px rgb(11 27 52 / 0.04), 0 8px 24px -12px rgb(11 27 52 / 0.12);
+    --radius-card: 1rem;
+    --shadow-soft: 0 1px 2px rgb(20 22 29 / 0.04), 0 10px 30px -12px rgb(99 102 241 / 0.14);
+    --shadow-lift: 0 2px 6px rgb(20 22 29 / 0.05), 0 24px 48px -16px rgb(99 102 241 / 0.22);
 
     --breakpoint-xs: 22rem;
 }
@@ -63,18 +70,18 @@
 
     html {
         scroll-behavior: smooth;
+        scroll-padding-top: 5.5rem;
         -webkit-text-size-adjust: 100%;
     }
 
     body {
-        @apply bg-white text-navy-800 antialiased;
+        @apply bg-white text-ink-700 antialiased;
         font-feature-settings: 'ss01';
         text-wrap: pretty;
     }
 
-    /* Logical-property friendly defaults for RTL */
     h1, h2, h3, h4 {
-        @apply font-bold text-navy-900;
+        @apply font-bold text-ink-900;
         text-wrap: balance;
     }
 
@@ -94,49 +101,85 @@
     }
 
     .section-pad {
-        @apply py-14 sm:py-20 lg:py-28;
+        @apply py-16 sm:py-24 lg:py-28;
     }
 
-    /* Buttons — each variant is self-contained (Tailwind v4 @apply takes utilities only) */
+    /* Buttons — variants self-contained (Tailwind v4 @apply takes utilities only) */
     .btn,
     .btn-primary,
     .btn-ghost,
     .btn-white {
-        @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition
                focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60;
         min-height: 44px;
     }
-    .btn-primary { @apply bg-brand-500 text-white hover:bg-brand-600; }
-    .btn-ghost { @apply border border-navy-200 text-navy-800 hover:border-brand-400 hover:text-brand-600; }
-    .btn-white { @apply bg-white text-navy-900 hover:bg-mist-100; }
+    .btn-primary {
+        color: #fff;
+        background-image: linear-gradient(120deg, var(--color-brand-500), var(--color-iris-500));
+        box-shadow: 0 8px 20px -8px rgb(99 102 241 / 0.5);
+    }
+    .btn-primary:hover { filter: brightness(1.06); box-shadow: 0 12px 26px -8px rgb(99 102 241 / 0.55); }
+    .btn-ghost { @apply border border-ink-200 bg-white text-ink-800 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700; }
+    .btn-white { @apply bg-white text-ink-900 hover:bg-paper-100; }
     .btn-lg { @apply px-7 py-4 text-base; }
 
     .card {
-        @apply rounded-2xl border border-mist-200 bg-white p-6 transition;
-        box-shadow: var(--shadow-card);
+        @apply rounded-2xl border border-paper-200 bg-white p-6 transition;
+        box-shadow: var(--shadow-soft);
     }
-    .card-hover { @apply hover:-translate-y-0.5 hover:border-brand-200; }
+    .card-hover { @apply hover:-translate-y-1 hover:border-brand-200; }
+    .card-hover:hover { box-shadow: var(--shadow-lift); }
 
     .eyebrow {
-        @apply mb-3 inline-block text-sm font-semibold uppercase tracking-wide text-brand-600;
+        @apply mb-3 inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1
+               text-xs font-bold text-brand-700;
     }
 
-    .lead { @apply text-lg leading-8 text-navy-600; }
+    .lead { @apply text-lg leading-8 text-ink-500; }
+
+    .text-gradient {
+        background-image: linear-gradient(120deg, var(--color-brand-600), var(--color-iris-500));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Icon chip used across sections */
+    .icon-chip {
+        @apply inline-grid place-items-center rounded-xl text-lg;
+        background-image: linear-gradient(140deg, var(--color-brand-50), var(--color-iris-50));
+        color: var(--color-brand-600);
+        border: 1px solid var(--color-brand-100);
+    }
+
+    /* Soft decorative background glow — no CSS filter (cheap + render-safe).
+       The softness comes from the radial-gradient's own transparent falloff. */
+    .glow {
+        position: absolute;
+        border-radius: 9999px;
+        opacity: 0.55;
+        pointer-events: none;
+        z-index: 0;
+    }
 
     .prose-fa {
-        @apply leading-8 text-navy-700;
+        @apply leading-8 text-ink-600;
     }
-    .prose-fa :where(h2) { @apply mt-10 mb-4 text-2xl; }
-    .prose-fa :where(h3) { @apply mt-8 mb-3 text-xl; }
+    .prose-fa :where(h2) { @apply mt-10 mb-4 text-2xl text-ink-900; }
+    .prose-fa :where(h3) { @apply mt-8 mb-3 text-xl text-ink-900; }
     .prose-fa :where(p) { @apply my-4; }
     .prose-fa :where(ul) { @apply my-4 list-disc space-y-2 pr-6; }
     .prose-fa :where(ol) { @apply my-4 list-decimal space-y-2 pr-6; }
     .prose-fa :where(a) { @apply text-brand-600 underline underline-offset-4; }
     .prose-fa :where(img) { @apply my-6 rounded-xl; }
-    .prose-fa :where(blockquote) { @apply my-6 border-r-4 border-brand-200 pr-4 text-navy-600; }
+    .prose-fa :where(blockquote) { @apply my-6 border-r-4 border-brand-200 pr-4 text-ink-500; }
 }
 
-/* Respect reduced motion */
+/* Active nav link (scrollspy) */
+.nav-link.is-active {
+    @apply bg-brand-50 text-brand-700;
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.001ms !important;

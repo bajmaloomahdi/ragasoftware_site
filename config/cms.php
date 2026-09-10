@@ -48,6 +48,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Section anchors
+    |--------------------------------------------------------------------------
+    | Maps a section *type* to a stable HTML id, so the homepage becomes a
+    | single-page experience the header nav can scroll to. The renderer only
+    | applies the id to the FIRST section of each type on a page.
+    */
+    'anchors' => [
+        'hero' => 'home',
+        'about_intro' => 'about',
+        'services_grid' => 'services',
+        'products_grid' => 'products',
+        'advantages' => 'why',
+        'stats' => 'stats',
+        'projects_grid' => 'projects',
+        'customers_logos' => 'customers',
+        'testimonials' => 'testimonials',
+        'team_grid' => 'team',
+        'blog_latest' => 'articles',
+        'faq' => 'faq',
+        'cta_banner' => 'contact',
+        'contact_form' => 'contact',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Section builder registry
     |--------------------------------------------------------------------------
     | The catalogue of section *types* a page can be composed of. This is the
@@ -75,6 +100,7 @@ return [
                 'secondary_cta_label' => ['type' => 'text', 'label' => 'متن دکمه دوم'],
                 'secondary_cta_url' => ['type' => 'text', 'label' => 'لینک دکمه دوم'],
                 'media_id' => ['type' => 'media', 'label' => 'تصویر / ماک‌آپ محصول'],
+                'logo_cards' => ['type' => 'media_multiple', 'label' => 'لوگوهای کارت‌های هیرو (تا ۳ عدد)'],
                 'stats' => ['type' => 'repeater', 'label' => 'آمار', 'item' => [
                     'value' => ['type' => 'text', 'label' => 'عدد'],
                     'label' => ['type' => 'text', 'label' => 'برچسب'],
@@ -269,7 +295,7 @@ return [
                 'subheading' => ['type' => 'textarea', 'label' => 'توضیح'],
                 'cta_label' => ['type' => 'text', 'label' => 'متن دکمه'],
                 'cta_url' => ['type' => 'text', 'label' => 'لینک دکمه'],
-                'style' => ['type' => 'select', 'label' => 'ظاهر', 'options' => ['navy' => 'سرمه‌ای', 'light' => 'روشن', 'gradient' => 'گرادیان ملایم']],
+                'style' => ['type' => 'select', 'label' => 'ظاهر', 'options' => ['gradient' => 'گرادیان (پیش‌فرض)', 'light' => 'روشن', 'solid' => 'تیره یکدست']],
             ],
         ],
 

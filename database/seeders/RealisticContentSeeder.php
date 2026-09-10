@@ -394,13 +394,15 @@ class RealisticContentSeeder extends Seeder
     {
         $header = NavigationMenu::updateOrCreate(['location' => 'header'], ['name' => 'منوی اصلی']);
         $header->items()->delete();
+        // Homepage is a single-page experience: nav scrolls to sections.
+        // Real standalone pages (blog, contact) keep full links.
         $items = [
-            ['محصولات', 'url', '/products'],
-            ['خدمات', 'url', '/services'],
-            ['نمونه‌کارها', 'url', '/projects'],
+            ['خانه', 'url', '/'],
+            ['درباره ما', 'url', '/#about'],
+            ['خدمات', 'url', '/#services'],
+            ['محصولات', 'url', '/#products'],
+            ['پروژه‌ها', 'url', '/#projects'],
             ['وبلاگ', 'url', '/blog'],
-            ['سؤالات متداول', 'url', '/faq'],
-            ['درباره ما', 'url', '/about'],
             ['تماس با ما', 'url', '/contact'],
         ];
         foreach ($items as $i => [$label, $type, $val]) {
@@ -462,7 +464,7 @@ class RealisticContentSeeder extends Seeder
             ]],
             ['type' => 'team_grid', 'name' => 'تیم', 'sort_order' => 3, 'is_active' => true, 'settings' => ['heading' => 'تیم رهبری']],
             ['type' => 'cta_banner', 'name' => 'CTA', 'sort_order' => 4, 'is_active' => true, 'settings' => [
-                'heading' => 'بیایید درباره سازمان شما صحبت کنیم', 'cta_label' => 'تماس با ما', 'cta_url' => '/contact', 'style' => 'navy',
+                'heading' => 'بیایید درباره سازمان شما صحبت کنیم', 'cta_label' => 'تماس با ما', 'cta_url' => '/contact', 'style' => 'gradient',
             ]],
         ]);
         $about->seo()->updateOrCreate([], ['meta_title' => 'درباره راگا سافت‌ور | شرکت نرم‌افزار سازمانی', 'meta_description' => 'با تیم، تجربه و ارزش‌های راگا سافت‌ور آشنا شوید؛ توسعه‌دهنده ERP، CRM و اتوماسیون اداری برای سازمان‌های ایرانی.']);
@@ -489,6 +491,9 @@ class RealisticContentSeeder extends Seeder
             'show_in_sitemap' => true,
         ]);
 
+        // 3 logo cards for the hero — real logos from the (DB-managed) customers.
+        $heroLogoIds = Customer::whereNotNull('logo_media_id')->orderBy('sort_order')->limit(3)->pluck('logo_media_id')->all();
+
         $home->sections()->delete();
         $home->sections()->createMany([
             ['type' => 'hero', 'name' => 'هیرو', 'sort_order' => 0, 'is_active' => true, 'settings' => [
@@ -496,29 +501,35 @@ class RealisticContentSeeder extends Seeder
                 'heading' => 'سازمان‌تان را یکپارچه و هوشمند مدیریت کنید',
                 'subheading' => 'راگا سافت‌ور با مجموعه‌ای از راهکارهای بومی ERP، CRM، اتوماسیون اداری و هوش تجاری، داده‌های پراکنده سازمان شما را به تصمیم‌های سریع و مطمئن تبدیل می‌کند.',
                 'primary_cta_label' => 'درخواست مشاوره رایگان',
-                'primary_cta_url' => '/contact',
+                'primary_cta_url' => '#contact',
                 'secondary_cta_label' => 'مشاهده محصولات',
-                'secondary_cta_url' => '/products',
+                'secondary_cta_url' => '#products',
                 'media_id' => SeedMedia::make('home-hero', 'داشبورد مدیریتی راگا', 'mockup')->id,
+                'logo_cards' => $heroLogoIds,
                 'stats' => [
                     ['value' => '+۱۲۰', 'label' => 'سازمان'],
                     ['value' => '+۱۲', 'label' => 'سال تجربه'],
                     ['value' => '۹۸٪', 'label' => 'رضایت مشتری'],
                 ],
             ]],
-            ['type' => 'about_intro', 'name' => 'معرفی', 'sort_order' => 1, 'is_active' => true, 'settings' => [
+            ['type' => 'about_intro', 'name' => 'معرفی کوتاه', 'sort_order' => 1, 'is_active' => true, 'settings' => [
                 'heading' => 'همراه سازمان‌های ایرانی در مسیر تحول دیجیتال',
                 'body' => '<p>بیش از یک دهه است که راگا سافت‌ور نرم‌افزارهای سازمانی می‌سازد؛ نرم‌افزارهایی که فرایند واقعی کسب‌وکار ایرانی را می‌فهمند و با مقررات آن سازگارند.</p><p>از یک استارتاپ رو به رشد تا هلدینگ‌های بزرگ، راهکار راگا با شما مقیاس می‌گیرد.</p>',
                 'media_id' => SeedMedia::make('home-about', 'تیم راگا سافت‌ور')->id,
                 'cta_label' => 'درباره ما',
                 'cta_url' => '/about',
             ]],
-            ['type' => 'products_grid', 'name' => 'محصولات', 'sort_order' => 2, 'is_active' => true, 'settings' => [
+            ['type' => 'services_grid', 'name' => 'خدمات', 'sort_order' => 2, 'is_active' => true, 'settings' => [
+                'heading' => 'خدمات ما',
+                'subheading' => 'از مشاوره و پیاده‌سازی تا توسعه اختصاصی و پشتیبانی؛ کنار سازمان شما در تمام مسیر.',
+                'mode' => 'featured', 'limit' => 6,
+            ]],
+            ['type' => 'products_grid', 'name' => 'محصولات', 'sort_order' => 3, 'is_active' => true, 'settings' => [
                 'heading' => 'محصولات و راهکارها',
                 'subheading' => 'هر ماژول به‌تنهایی ارزش‌آفرین است و در کنار هم یک سامانه سازمانی یکپارچه می‌سازد.',
                 'mode' => 'featured', 'limit' => 6, 'columns' => '3',
             ]],
-            ['type' => 'advantages', 'name' => 'چرا راگا', 'sort_order' => 3, 'is_active' => true, 'settings' => [
+            ['type' => 'advantages', 'name' => 'مزیت‌ها', 'sort_order' => 4, 'is_active' => true, 'settings' => [
                 'heading' => 'چرا راگا سافت‌ور؟',
                 'subheading' => 'انتخاب یک شریک فناوری، تصمیمی بلندمدت است.',
                 'items' => [
@@ -530,22 +541,34 @@ class RealisticContentSeeder extends Seeder
                     ['icon' => '⚙️', 'title' => 'انعطاف و توسعه‌پذیری', 'description' => 'فرایندساز و API باز برای تطبیق با نیاز خاص سازمان شما.'],
                 ],
             ]],
-            ['type' => 'projects_grid', 'name' => 'نمونه‌کارها', 'sort_order' => 4, 'is_active' => true, 'settings' => [
+            ['type' => 'stats', 'name' => 'آمار', 'sort_order' => 5, 'is_active' => true, 'settings' => [
+                'heading' => 'راگا در یک نگاه',
+                'items' => [
+                    ['value' => '+۱۲۰', 'label' => 'سازمان'],
+                    ['value' => '+۱۲', 'label' => 'سال تجربه'],
+                    ['value' => '+۶۰', 'label' => 'متخصص'],
+                    ['value' => '۹۸٪', 'label' => 'رضایت پشتیبانی'],
+                ],
+            ]],
+            ['type' => 'projects_grid', 'name' => 'نمونه‌کارها', 'sort_order' => 6, 'is_active' => true, 'settings' => [
                 'heading' => 'پروژه‌هایی که به نتیجه رسیدند', 'limit' => 3,
             ]],
-            ['type' => 'customers_logos', 'name' => 'مشتریان', 'sort_order' => 5, 'is_active' => true, 'settings' => [
+            ['type' => 'customers_logos', 'name' => 'مشتریان', 'sort_order' => 7, 'is_active' => true, 'settings' => [
                 'heading' => 'مورد اعتماد سازمان‌های پیشرو', 'grayscale' => true,
             ]],
-            ['type' => 'testimonials', 'name' => 'نظرات', 'sort_order' => 6, 'is_active' => true, 'settings' => [
+            ['type' => 'testimonials', 'name' => 'نظرات مشتریان', 'sort_order' => 8, 'is_active' => true, 'settings' => [
                 'heading' => 'مشتریان ما چه می‌گویند', 'limit' => 3,
             ]],
-            ['type' => 'blog_latest', 'name' => 'وبلاگ', 'sort_order' => 7, 'is_active' => true, 'settings' => [
-                'heading' => 'از وبلاگ راگا', 'subheading' => 'تجربه‌ها و تحلیل‌های ما درباره نرم‌افزار سازمانی.', 'limit' => 3,
+            ['type' => 'blog_latest', 'name' => 'مقالات منتخب', 'sort_order' => 9, 'is_active' => true, 'settings' => [
+                'heading' => 'مقالات منتخب', 'subheading' => 'تجربه‌ها و تحلیل‌های ما درباره نرم‌افزار سازمانی.', 'limit' => 3,
             ]],
-            ['type' => 'cta_banner', 'name' => 'CTA', 'sort_order' => 8, 'is_active' => true, 'settings' => [
+            ['type' => 'faq', 'name' => 'سؤالات متداول', 'sort_order' => 10, 'is_active' => true, 'settings' => [
+                'heading' => 'سؤالات متداول', 'limit' => 6,
+            ]],
+            ['type' => 'cta_banner', 'name' => 'CTA نهایی', 'sort_order' => 11, 'is_active' => true, 'settings' => [
                 'heading' => 'آماده‌اید کسب‌وکار خود را هوشمندتر مدیریت کنید؟',
                 'subheading' => 'یک جلسه‌ی مشاوره‌ی رایگان با کارشناسان راگا رزرو کنید.',
-                'cta_label' => 'درخواست مشاوره', 'cta_url' => '/contact', 'style' => 'gradient',
+                'cta_label' => 'درخواست مشاوره', 'cta_url' => route('contact'), 'style' => 'gradient',
             ]],
         ]);
 

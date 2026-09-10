@@ -12,25 +12,30 @@
     ]" />
 
     <article>
-        <header class="bg-navy-800 text-white">
-            <div class="container-site grid items-center gap-10 py-14 lg:grid-cols-2 lg:py-20">
+        <header class="relative overflow-hidden bg-white">
+            <div class="glow -left-40 -top-32 h-[26rem] w-[26rem]" style="background: radial-gradient(circle, var(--color-iris-200), transparent 70%);"></div>
+            <div class="glow -right-32 top-10 h-[24rem] w-[24rem]" style="background: radial-gradient(circle, var(--color-brand-200), transparent 70%);"></div>
+            <div class="container-site relative z-10 grid items-center gap-10 py-14 lg:grid-cols-2 lg:py-20">
                 <div>
                     @if($product->category)
-                        <span class="eyebrow text-brand-300">{{ $product->category->name }}</span>
+                        <span class="eyebrow"><span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>{{ $product->category->name }}</span>
                     @endif
-                    <h1 class="text-3xl font-extrabold sm:text-4xl">{{ $product->title }}</h1>
-                    @if($product->tagline)<p class="mt-3 text-lg text-brand-200">{{ $product->tagline }}</p>@endif
-                    @if($product->summary)<p class="mt-5 max-w-xl text-navy-100">{{ $product->summary }}</p>@endif
-                    <div class="mt-8 flex flex-wrap gap-3">
+                    <h1 class="text-3xl font-extrabold text-ink-900 sm:text-4xl lg:text-[2.8rem]">{{ $product->title }}</h1>
+                    @if($product->tagline)<p class="mt-3 text-lg font-medium text-brand-600">{{ $product->tagline }}</p>@endif
+                    @if($product->summary)<p class="mt-5 max-w-xl text-ink-500">{{ $product->summary }}</p>@endif
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                         <a href="{{ $product->cta_url ?: route('contact') }}" class="btn-primary btn-lg">
                             {{ $product->cta_label ?: 'درخواست دمو' }}
+                            <svg class="h-4 w-4 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M9 5l7 7-7 7"/></svg>
                         </a>
-                        <a href="#features" class="btn-lg btn border border-white/25 text-white hover:bg-white/10">قابلیت‌ها</a>
+                        <a href="#features" class="btn-ghost btn-lg">قابلیت‌ها</a>
                     </div>
                 </div>
                 <div>
                     @if($product->heroImage)
-                        <x-picture :media="$product->heroImage" size="lg" eager class="w-full rounded-2xl border border-white/10" ratio="16/10" />
+                        <div class="rounded-3xl border border-paper-200 bg-white p-2" style="box-shadow: var(--shadow-lift);">
+                            <x-picture :media="$product->heroImage" size="lg" eager class="w-full rounded-2xl" ratio="16/10" />
+                        </div>
                     @endif
                 </div>
             </div>
@@ -43,15 +48,15 @@
         @endif
 
         @if($product->activeFeatures->isNotEmpty())
-            <section id="features" class="section-pad bg-mist-50">
+            <section id="features" class="section-pad bg-paper-50">
                 <div class="container-site">
                     <x-section-heading title="قابلیت‌های کلیدی" />
                     <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach($product->activeFeatures as $feature)
                             <div>
-                                @if($feature->icon)<span class="mb-3 inline-grid h-11 w-11 place-items-center rounded-lg bg-brand-50 text-brand-600 text-lg">{{ $feature->icon }}</span>@endif
-                                <h3 class="text-base font-bold text-navy-900">{{ $feature->title }}</h3>
-                                <p class="mt-2 text-sm leading-7 text-navy-600">{{ $feature->description }}</p>
+                                <span class="icon-chip h-11 w-11">{{ $feature->icon ?: '✓' }}</span>
+                                <h3 class="mt-4 text-base font-bold text-ink-900">{{ $feature->title }}</h3>
+                                <p class="mt-2 text-sm leading-7 text-ink-500">{{ $feature->description }}</p>
                             </div>
                         @endforeach
                     </div>
@@ -62,7 +67,7 @@
         @if($related->isNotEmpty())
             <section class="section-pad">
                 <div class="container-site">
-                    <h2 class="mb-8 text-xl font-bold text-navy-900">محصولات مرتبط</h2>
+                    <h2 class="mb-8 text-xl font-bold text-ink-900">محصولات مرتبط</h2>
                     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach($related as $item)
                             <x-product-card :product="$item" />

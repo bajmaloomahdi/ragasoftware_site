@@ -1,12 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="داشبورد مدیریتی راگا">
-  <defs><linearGradient id="g9da3f1" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#12294d"/><stop offset="1" stop-color="#1b3785"/>
-  </linearGradient></defs>
-  <rect width="1200" height="750" fill="url(#g9da3f1)"/>
-      <circle cx="1200" cy="0" r="220" fill="#06b6d4" opacity="0.18"/>
-    <circle cx="0" cy="750" r="180" fill="#ffffff" opacity="0.06"/>
-    <rect x="8%" y="62%" width="52%" height="8" rx="4" fill="#ffffff" opacity="0.25"/>
-    <rect x="8%" y="70%" width="34%" height="8" rx="4" fill="#ffffff" opacity="0.15"/>
-  <text x="8%" y="38%" fill="#ffffff" font-family="Vazirmatn, Tahoma, sans-serif" font-size="44" font-weight="700">داشبورد مدیریتی راگا</text>
-  <text x="8%" y="46%" fill="#06b6d4" font-family="Vazirmatn, Tahoma, sans-serif" font-size="18" font-weight="600">RagaSoftware</text>
+  <defs>
+    <linearGradient id="bg9da3f1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f3ff"/><stop offset="1" stop-color="#faf4ff"/></linearGradient>
+    <linearGradient id="ac9da3f1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bg9da3f1)"/>
+  <g transform="translate(96 120)">
+    <rect width="1008" height="465" rx="18" fill="#ffffff" stroke="#e8e6f1"/>
+    <circle cx="26" cy="26" r="5" fill="#dcd9e8"/><circle cx="44" cy="26" r="5" fill="#dcd9e8"/><circle cx="62" cy="26" r="5" fill="#dcd9e8"/>
+    <rect x="20" y="52" width="150" height="389" rx="12" fill="#f4f3f9"/>
+    <rect x="190" y="60" width="220" height="14" rx="7" fill="url(#ac9da3f1)"/>
+    <rect x="190" y="86" width="140" height="10" rx="5" fill="#e8e6f1"/>
+    <rect x="190" y="345" width="90" height="90" rx="10" fill="#eef1ff"/>
+    <rect x="292" y="345" width="90" height="90" rx="10" fill="#f5e8ff"/>
+    <rect x="394" y="345" width="90" height="90" rx="10" fill="#eef1ff"/>
+    <rect x="788" y="60" width="200" height="375" rx="12" fill="#faf9fd"/>
+    <rect x="808" y="395" width="40" height="40" rx="8" fill="url(#ac9da3f1)"/>
+  </g>
+  <text x="8%" y="690" fill="#14161d" font-family="Vazirmatn, Tahoma, sans-serif" font-size="26" font-weight="700">داشبورد مدیریتی راگا</text>
 </svg>

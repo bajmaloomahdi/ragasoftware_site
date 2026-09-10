@@ -9,9 +9,9 @@
         <x-breadcrumbs :items="[['label' => $page->title]]" />
 
         @unless($hasHero)
-            <header class="bg-mist-50">
+            <header class="bg-paper-50">
                 <div class="container-site py-10 sm:py-14">
-                    <h1 class="text-3xl font-extrabold text-navy-900 sm:text-4xl">{{ $page->title }}</h1>
+                    <h1 class="text-3xl font-extrabold text-ink-900 sm:text-4xl">{{ $page->title }}</h1>
                     @if($page->excerpt)
                         <p class="mt-3 lead max-w-2xl">{{ $page->excerpt }}</p>
                     @endif
@@ -23,7 +23,7 @@
     {!! $sectionsHtml !!}
 
     @if(! ($isHome ?? false) && $page->activeSections->isEmpty() && ! $page->excerpt)
-        <div class="container-site section-pad text-navy-500">این صفحه هنوز محتوایی ندارد.</div>
+        <div class="container-site section-pad text-ink-500">این صفحه هنوز محتوایی ندارد.</div>
     @endif
 @endsection
 

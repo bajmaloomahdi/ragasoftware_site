@@ -94,9 +94,12 @@ class SectionRegistry
         // resolve single + multiple media references anywhere in settings
         $data['media'] = isset($settings['media_id']) ? media($settings['media_id']) : null;
 
-        if (! empty($settings['media_ids']) && is_array($settings['media_ids'])) {
-            $data['medias'] = \App\Models\Media::whereIn('id', $settings['media_ids'])->get()
-                ->sortBy(fn ($m) => array_search($m->id, $settings['media_ids']))->values();
+        foreach (['media_ids' => 'medias', 'logo_cards' => 'logoCards'] as $key => $out) {
+            if (! empty($settings[$key]) && is_array($settings[$key])) {
+                $ids = $settings[$key];
+                $data[$out] = \App\Models\Media::whereIn('id', $ids)->get()
+                    ->sortBy(fn ($m) => array_search($m->id, $ids))->values();
+            }
         }
 
         $limit = (int) ($settings['limit'] ?? 6) ?: 6;

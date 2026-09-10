@@ -1,20 +1,25 @@
 @php($s = $settings)
 @if(($items ?? collect())->isNotEmpty())
-<section class="section-pad bg-mist-50">
+<section class="section-pad bg-paper-50">
     <div class="container-site">
-        <x-section-heading :eyebrow="'نمونه‌کارها'" :title="$s['heading'] ?? 'پروژه‌های اجراشده'" :subtitle="$s['subheading'] ?? null" />
-        <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <x-section-heading :eyebrow="$s['eyebrow'] ?? 'نمونه‌کارها'" :title="$s['heading'] ?? 'پروژه‌هایی که به نتیجه رسیدند'" :subtitle="$s['subheading'] ?? null" />
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($items as $project)
-                <a href="{{ route('projects.show', $project->slug) }}" class="group relative overflow-hidden rounded-2xl border border-mist-200 bg-white">
-                    <x-picture :media="$project->cover" ratio="4/3" class="w-full object-cover transition duration-300 group-hover:scale-[1.04]" />
-                    <div class="p-5">
-                        <p class="text-xs font-medium text-brand-600">{{ $project->client_name ?: optional($project->customer)->name }}</p>
-                        <h3 class="mt-1 font-bold text-navy-900">{{ $project->title }}</h3>
+                <a href="{{ route('projects.show', $project->slug) }}" class="card card-hover group relative flex flex-col overflow-hidden p-0">
+                    <div class="overflow-hidden border-b border-paper-200 bg-white">
+                        <x-picture :media="$project->cover" ratio="4/3" class="w-full object-cover transition duration-500 group-hover:scale-[1.05]" />
+                    </div>
+                    <div class="flex flex-1 flex-col p-6">
+                        <p class="text-xs font-semibold text-brand-600">{{ $project->client_name ?: optional($project->customer)->name }}</p>
+                        <h3 class="mt-1 font-bold text-ink-900 transition group-hover:text-brand-700">{{ $project->title }}</h3>
+                        @if($project->summary)
+                            <p class="mt-2 text-sm leading-7 text-ink-500">{{ \Illuminate\Support\Str::limit($project->summary, 90) }}</p>
+                        @endif
                     </div>
                 </a>
             @endforeach
         </div>
-        <div class="mt-10 text-center">
+        <div class="mt-12 text-center">
             <a href="{{ route('projects.index') }}" class="btn-ghost">همه نمونه‌کارها</a>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <div class="container-site">
         <div class="{{ $width }} mx-auto">
             @if(!empty($s['heading']))
-                <h2 class="mb-6 text-2xl font-bold text-navy-900 sm:text-3xl">{{ $s['heading'] }}</h2>
+                <h2 class="mb-6 text-2xl font-bold text-ink-900 sm:text-3xl">{{ $s['heading'] }}</h2>
             @endif
             <div class="prose-fa">{!! $s['body'] ?? '' !!}</div>
         </div>

@@ -16,8 +16,8 @@
         <div class="container-site max-w-3xl">
             <header>
                 @if($post->category)<span class="eyebrow">{{ $post->category->name }}</span>@endif
-                <h1 class="text-3xl font-extrabold leading-tight text-navy-900 sm:text-4xl">{{ $post->title }}</h1>
-                <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-navy-500">
+                <h1 class="text-3xl font-extrabold leading-tight text-ink-900 sm:text-4xl">{{ $post->title }}</h1>
+                <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-500">
                     @if($post->author)<span>{{ $post->author->name }}</span>@endif
                     <time datetime="{{ jdate_iso($post->published_at) }}">{{ jdate($post->published_at) }}</time>
                     <span>{{ $post->reading_minutes ?? 3 }} دقیقه مطالعه</span>
@@ -33,7 +33,7 @@
             @if($post->tags->isNotEmpty())
                 <div class="mt-8 flex flex-wrap gap-2">
                     @foreach($post->tags as $tag)
-                        <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}" class="rounded-full bg-mist-100 px-3 py-1 text-xs text-navy-600 hover:bg-mist-200">#{{ $tag->name }}</a>
+                        <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}" class="rounded-full bg-paper-100 px-3 py-1 text-xs text-ink-600 hover:bg-paper-200">#{{ $tag->name }}</a>
                     @endforeach
                 </div>
             @endif
@@ -41,9 +41,9 @@
     </article>
 
     @if($related->isNotEmpty())
-        <section class="section-pad bg-mist-50">
+        <section class="section-pad bg-paper-50">
             <div class="container-site">
-                <h2 class="mb-8 text-xl font-bold text-navy-900">مقالات مرتبط</h2>
+                <h2 class="mb-8 text-xl font-bold text-ink-900">مقالات مرتبط</h2>
                 <div class="grid gap-6 sm:grid-cols-3">
                     @foreach($related as $item)
                         <x-post-card :post="$item" />
