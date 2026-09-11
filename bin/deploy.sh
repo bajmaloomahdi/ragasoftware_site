@@ -11,6 +11,12 @@
 # step is idempotent and self-heals a previous, insecure deploy layout
 # (whole app copied into $DOCROOT) without ever deleting real data.
 #
+# vendor/ is committed to the repo (not installed here) — this host's PHP has
+# proc_get_status disabled, which breaks Composer's subprocess execution
+# entirely, not just its git-based version detection. Regenerate vendor/
+# locally with `composer install --no-dev --optimize-autoloader` and commit
+# it before pushing; never edit vendor/ by hand.
+#
 # Run manually if needed:  bash ~/repositories/ragasoftware_site/bin/deploy.sh
 # ---------------------------------------------------------------------------
 set -euo pipefail
@@ -40,32 +46,9 @@ PHP="$(find_bin php \
     /opt/cpanel/ea-php83/root/usr/bin/php \
     /opt/cpanel/ea-php84/root/usr/bin/php \
     /usr/local/bin/ea-php83 \
-    /usr/bin/php)" || { echo "ERROR: php CLI not found — set PATH in .cpanel.yml or run composer manually"; exit 1; }
-
-COMPOSER="$(find_bin composer \
-    /opt/cpanel/composer/bin/composer \
-    /usr/local/bin/composer \
-    "$HOME/bin/composer" \
-    "$HOME/composer.phar" \
-    ./composer.phar)" || { echo "ERROR: composer not found — install it or run 'composer install' in cPanel Terminal once"; exit 1; }
+    /usr/bin/php)" || { echo "ERROR: php CLI not found — set PATH in .cpanel.yml"; exit 1; }
 
 echo "==> php:      $PHP  ($("$PHP" -r 'echo PHP_VERSION;' 2>/dev/null))"
-echo "==> composer: $COMPOSER"
-
-# A .phar needs the php interpreter in front of it.
-case "$COMPOSER" in
-    *.phar) COMPOSER="$PHP $COMPOSER" ;;
-esac
-
-export COMPOSER_ALLOW_SUPERUSER=1
-export COMPOSER_MEMORY_LIMIT=-1
-# proc_get_status is disabled on this host, so Composer can't shell out to
-# git to guess the root package version and fails; setting it explicitly
-# skips that detection step entirely.
-export COMPOSER_ROOT_VERSION=1.0.0
-
-echo "==> composer install --no-dev --optimize-autoloader"
-$COMPOSER install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 backup_leftover() {
     # Moves (never deletes) a real, non-symlink leftover out of the web root.
@@ -185,6 +168,7 @@ PHP
 echo "==> generated $DOCROOT/index.php (appBase=$REPO_ROOT)"
 
 echo "==> rebuilding caches"
+"$PHP" artisan package:discover --ansi
 "$PHP" artisan optimize:clear
 "$PHP" artisan config:cache
 "$PHP" artisan route:cache

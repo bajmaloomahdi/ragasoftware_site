@@ -26,7 +26,11 @@
 !/public/uploads/seed/
 /storage/*.key
 /storage/pail
-/vendor
+# vendor/ is intentionally COMMITTED — the host's Composer can't run
+# (proc_get_status is disabled there and Composer needs it to shell out),
+# so production dependencies ship in the repo instead of being installed
+# server-side. Always regenerate via `composer install --no-dev --optimize-autoloader`
+# before committing, never edit vendor/ by hand.
 _ide_helper.php
 Homestead.json
 Homestead.yaml
