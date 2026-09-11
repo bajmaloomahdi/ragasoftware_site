@@ -111,52 +111,77 @@ npm run types            # بررسی TypeScript
 
 ## ۵) استقرار روی هاست اشتراکی PHP + MySQL
 
+### وقتی Document Root قابل تغییر نیست (وضعیت فعلی ragasoftware.ir)
+
+روی این هاست، Document Root ثابت روی `/home/ragasoftwareir/public_html` است و
+نمی‌توان آن را به `.../public` اشاره داد. برای همین، کد اصلی لاراول
+(`app/`, `bootstrap/`, `config/`, `database/`, `resources/`, `routes/`,
+`storage/`, `vendor/`, `.env`, …) همیشه در چک‌اوت Git می‌ماند —
+`/home/ragasoftwareir/repositories/ragasoftware_site` — که خودش زیر هیچ
+Document Root‌ای نیست و از طریق HTTP در دسترس نیست. فقط محتوای `public/`
+به Document Root ثابت می‌رسد: `build/` و `uploads/` به‌صورت symlink به همان
+مسیر واقعی در چک‌اوت، `favicon.ico` هم symlink، `.htaccess` یک کپی تازه در
+هر Deploy، و `index.php` هر بار با مسیر مطلق چک‌اوت از نو ساخته می‌شود (چون
+یک Entry Point symlink‌شده به رفتار Apache/PHP-FPM این هاست برای resolve کردن
+`__DIR__` وابسته می‌بود و قابل تضمین نبود). همه‌ی این کار را
+`bin/deploy.sh` روی هر Deploy از نو و idempotent انجام می‌دهد.
+
 ### خودکار (cPanel Git)
 فایل `.cpanel.yml` در ریشه‌ی پروژه هست. در cPanel → Git Version Control پس از
-«Update from Remote»، دکمه‌ی **Deploy HEAD Commit** را بزنید. این تسک‌ها اجرا می‌شوند:
-`public/build` کهنه پاک می‌شود → کل ریپو کپی می‌شود (بدون `vendor/`) →
-`composer install --no-dev --optimize-autoloader` → بازسازی کش‌ها.
-Document Root دامنه باید روی `public_html/public` باشد.
-پیش‌نیاز: در محیط دیپلوی هاست `composer` و `php` در دسترس باشند
-(اگر نبود، مسیر آن‌ها را در `.cpanel.yml` تنظیم کنید یا یک‌بار دستی `composer install` بزنید).
+«Update from Remote»، دکمه‌ی **Deploy HEAD Commit** را بزنید — این کار
+`bin/deploy.sh` را اجرا می‌کند که:
 
-### دستی
+1. `composer install --no-dev --optimize-autoloader` را **داخل چک‌اوت**
+   اجرا می‌کند (نه در Document Root؛ `vendor/` هرگز به `public_html` نمی‌رود).
+2. اگر `.env` هنوز داخل چک‌اوت نباشد، آن را یک‌بار از `public_html/.env`
+   (اگر از دیپلوی قدیمی مانده) کپی می‌کند و نسخه‌ی اصلی را از Document Root
+   خارج می‌کند — بدون حذف.
+3. هر چیزی که در `public_html` واقعاً یک فایل/پوشه‌ی uploads باشد (چه مسیر
+   قدیمی تخت `public_html/uploads`، چه مسیر تودرتوی قدیمی‌تر
+   `public_html/public/uploads`) را — بدون Overwrite کردن هیچ فایلی —
+   داخل `public/uploads` چک‌اوت ادغام می‌کند، بعد آن را symlink می‌کند.
+4. هر چیز دیگری که مستقیماً زیر `public_html` نشسته و جزو موارد بالا
+   نیست (باقیمانده از دیپلوی قدیمی/ناامن) را — بدون حذف — به یک پوشه‌ی
+   Backup خارج از Document Root منتقل می‌کند.
+5. `build`, `favicon.ico`, `uploads` را symlink، `.htaccess` را کپی،
+   `index.php` را با مسیر مطلق چک‌اوت از نو تولید می‌کند.
+6. کش‌های لاراول را بازسازی می‌کند.
+
+پیش‌نیاز: در محیط دیپلوی هاست `composer` و `php` در دسترس باشند
+(اگر نبود، مسیر آن‌ها را در `bin/deploy.sh` تنظیم کنید یا یک‌بار دستی
+`composer install` بزنید).
+
+### دستی (روی خود چک‌اوت، نه public_html)
 
 ```bash
-# روی سرور:
-git clone <repo> && cd ragasoftware_site      # یا git pull برای به‌روزرسانی
-composer install --no-dev --optimize-autoloader
+cd /home/ragasoftwareir/repositories/ragasoftware_site
+git pull                                        # یا از cPanel Update from Remote
+bash bin/deploy.sh                              # همان کاری که Deploy HEAD Commit انجام می‌دهد
 
-cp .env.example .env
-# تنظیم: APP_ENV=production ، APP_DEBUG=false ، APP_URL=https://ragasoftware.ir
-#        DB_HOST / DB_DATABASE / DB_USERNAME / DB_PASSWORD  ← اطلاعات MySQL هاست
-php artisan key:generate
-
+# فقط اولین بار:
 php artisan migrate --force
-php artisan db:seed --force                    # فقط در اولین استقرار
-
-php artisan storage:link                        # اختیاری؛ رسانه‌ها در public/uploads هستند و نیازی نیست
-php artisan config:cache route:cache view:cache event:cache
+php artisan db:seed --force
 ```
 
 **تنظیمات مورد نیاز هاست:**
 
-1. **Document Root** روی پوشه‌ی `public/` تنظیم شود.
-   اگر امکان تغییر Document Root نیست، محتوای `public/` را به ریشه منتقل و مسیرها را در `index.php` اصلاح کنید.
+1. اگر در آینده امکان تغییر Document Root به `.../public` فراهم شد،
+   می‌توانید معماری بالا را کنار بگذارید و مستقیم Document Root را روی
+   `public/` بگذارید — بدون هیچ تغییری در کد لاراول، چون `public/index.php`
+   اصلی (استاندارد لاراول) دست‌نخورده باقی مانده و فقط در حالت فعلی استفاده
+   نمی‌شود.
 2. **Cron** (برای انتشار زمان‌بندی‌شده و بازسازی نقشه سایت) — یک خط:
    ```
-   * * * * * cd /path/to/ragasoftware_site && php artisan schedule:run >> /dev/null 2>&1
+   * * * * * cd /home/ragasoftwareir/repositories/ragasoftware_site && php artisan schedule:run >> /dev/null 2>&1
    ```
-3. پوشه‌های `storage/` و `bootstrap/cache/` قابل نوشتن باشند.
+3. پوشه‌های `storage/` و `bootstrap/cache/` (داخل چک‌اوت) قابل نوشتن باشند.
 4. صف (`QUEUE_CONNECTION=database`) و کش (`CACHE_STORE=database`) روی دیتابیس‌اند؛ **نیازی به Redis نیست**.
    کارهای صف توسط `schedule:run` یا به‌صورت `sync` پردازش می‌شوند.
 
-**پس از هر به‌روزرسانی:**
+**پس از هر به‌روزرسانی:** همان `bin/deploy.sh` (دستی یا از طریق Deploy HEAD Commit) کافی است؛
+migration جدید را جدا اجرا کنید:
 ```bash
-git pull
-composer install --no-dev -o
 php artisan migrate --force
-php artisan optimize:clear && php artisan config:cache route:cache view:cache
 ```
 
 ### آپلود رسانه‌ها

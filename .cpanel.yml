@@ -1,29 +1,22 @@
 ---
-# cPanel Git™ deployment.
+# cPanel Git™ deployment — Route B (2026-09).
 #
-# Runs ONLY when you click "Deploy HEAD Commit" in
-# cPanel → Git Version Control (a plain `git pull` does NOT run these tasks).
+# The domain's Document Root is FIXED by the host at
+#     /home/ragasoftwareir/public_html
+# and cannot be pointed at <repo>/public (the usual Laravel requirement).
+# So the application source (app/, bootstrap/, config/, database/, resources/,
+# routes/, storage/, vendor/, .env, composer.json, …) stays inside this Git
+# checkout — /home/ragasoftwareir/repositories/ragasoftware_site — which is
+# NOT below any Document Root and is therefore never web-accessible. Only
+# public/'s contents are made reachable at the fixed Document Root, via
+# symlinks (build, uploads, favicon.ico, .htaccess) plus a generated
+# index.php that points at this checkout by absolute path — all rebuilt by
+# bin/deploy.sh on every deploy, so the split can never drift or go stale.
 #
-# Route A: vendor/ is NOT in the repo — production dependencies are installed
-# on the server by bin/deploy.sh (which auto-detects composer + php).
-#
-# The domain's DocumentRoot MUST point at:
-#     /home/ragasoftwareir/public_html/public
-#
+# Runs ONLY when you click "Deploy HEAD Commit" in cPanel → Git Version
+# Control (a plain `git pull` does NOT run these tasks). Tasks execute with
+# cwd = this repository checkout, which is why bin/deploy.sh is invoked with
+# a path relative to it.
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/ragasoftwareir/public_html
-
-    # 1) Wipe the stale compiled front-end so renamed hashed asset files
-    #    (a redesign changes them) can never linger and shadow the new manifest.
-    - /bin/rm -rf $DEPLOYPATH/public/build
-
-    # 2) Sync the repo. Small now (no vendor/), so `cp` finishes instantly and
-    #    cannot time out mid-copy. `*` skips dotfiles (.git stays out);
-    #    public/.htaccess is copied because it lives inside public/.
-    #    cp merges into existing dirs — user uploads in public/uploads/** and the
-    #    host .env are preserved; public/build was just removed so it lands clean.
-    - /bin/cp -Rf * $DEPLOYPATH/
-
-    # 3) Install prod dependencies + rebuild caches (auto-detects composer/php).
-    - /bin/bash $DEPLOYPATH/bin/deploy.sh
+    - /bin/bash bin/deploy.sh
