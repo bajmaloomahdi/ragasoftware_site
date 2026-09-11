@@ -59,6 +59,10 @@ esac
 
 export COMPOSER_ALLOW_SUPERUSER=1
 export COMPOSER_MEMORY_LIMIT=-1
+# proc_get_status is disabled on this host, so Composer can't shell out to
+# git to guess the root package version and fails; setting it explicitly
+# skips that detection step entirely.
+export COMPOSER_ROOT_VERSION=1.0.0
 
 echo "==> composer install --no-dev --optimize-autoloader"
 $COMPOSER install --no-dev --optimize-autoloader --no-interaction --prefer-dist
