@@ -5,11 +5,14 @@
 # The host's Document Root is fixed at $DOCROOT and can't be pointed at this
 # checkout's public/ folder, so this script keeps Laravel's application
 # source entirely inside the Git checkout (never web-exposed) and makes only
-# public/'s contents reachable at $DOCROOT — via symlinks for static
-# directories/files, and a freshly generated index.php that bootstraps
-# Laravel by absolute path. Re-running this script is always safe: every
-# step is idempotent and self-heals a previous, insecure deploy layout
-# (whole app copied into $DOCROOT) without ever deleting real data.
+# public/'s contents reachable at $DOCROOT — build/ and favicon.ico as real
+# copies refreshed every deploy (this host doesn't reliably serve symlinks
+# even with Options +FollowSymLinks — likely AllowOverride doesn't permit
+# it), uploads/ as a symlink (so new CMS uploads land straight in the
+# checkout), and a freshly generated index.php that bootstraps Laravel by
+# absolute path. Re-running this script is always safe: every step is
+# idempotent and self-heals a previous, insecure deploy layout (whole app
+# copied into $DOCROOT) without ever deleting real data.
 #
 # vendor/ is committed to the repo (not installed here) — this host's PHP has
 # proc_get_status disabled, which breaks Composer's subprocess execution
@@ -116,16 +119,22 @@ for entry in "$DOCROOT"/*; do
 done
 shopt -u dotglob nullglob
 
-# --- Static entries: symlink straight into the repo's public/ folder so
-#     they can never drift out of sync with what was just deployed.
-link_entry() {
+# --- build/ and favicon.ico: real copies, refreshed on every deploy so they
+#     can never drift out of sync with what was just deployed. Not symlinks —
+#     this host doesn't reliably serve them even with Options +FollowSymLinks
+#     in .htaccess (most likely AllowOverride doesn't permit that directive).
+copy_entry() {
     local target="$1" linkname="$2"
-    backup_leftover "$linkname"
-    ln -sfn "$target" "$linkname"
-    echo "==> linked   $linkname -> $target"
+    rm -rf "$linkname"
+    cp -Rf "$target" "$linkname"
+    echo "==> copied   $linkname <- $target"
 }
-link_entry "$REPO_ROOT/public/build"       "$DOCROOT/build"
-link_entry "$REPO_ROOT/public/favicon.ico" "$DOCROOT/favicon.ico"
+copy_entry "$REPO_ROOT/public/build"       "$DOCROOT/build"
+copy_entry "$REPO_ROOT/public/favicon.ico" "$DOCROOT/favicon.ico"
+
+# uploads/: kept as a symlink — new CMS uploads (written via public_path())
+# land directly in the checkout and are immediately live with nothing to
+# re-sync.
 ln -sfn "$REPO_ROOT/public/uploads" "$DOCROOT/uploads"
 echo "==> linked   $DOCROOT/uploads -> $REPO_ROOT/public/uploads"
 
