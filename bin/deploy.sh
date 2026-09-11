@@ -5,13 +5,14 @@
 # The host's Document Root is fixed at $DOCROOT and can't be pointed at this
 # checkout's public/ folder, so this script keeps Laravel's application
 # source entirely inside the Git checkout (never web-exposed) and makes only
-# public/'s contents reachable at $DOCROOT — build/ and favicon.ico as real
-# copies refreshed every deploy (this host doesn't reliably serve symlinks
-# even with Options +FollowSymLinks — likely AllowOverride doesn't permit
-# it), uploads/ as a symlink (so new CMS uploads land straight in the
-# checkout), and a freshly generated index.php that bootstraps Laravel by
-# absolute path. Re-running this script is always safe: every step is
-# idempotent and self-heals a previous, insecure deploy layout (whole app
+# public/'s contents reachable at $DOCROOT — build/, favicon.ico and uploads/
+# are all real copies refreshed every deploy (this host doesn't reliably
+# serve symlinks even with Options +FollowSymLinks — likely AllowOverride
+# doesn't permit it), plus a freshly generated index.php that bootstraps
+# Laravel by absolute path. Because uploads/ is a copy, new CMS uploads
+# written between deploys aren't reachable at the live URL until the next
+# deploy re-copies them. Re-running this script is always safe: every step
+# is idempotent and self-heals a previous, insecure deploy layout (whole app
 # copied into $DOCROOT) without ever deleting real data.
 #
 # vendor/ is committed to the repo (not installed here) — this host's PHP has
@@ -132,11 +133,12 @@ copy_entry() {
 copy_entry "$REPO_ROOT/public/build"       "$DOCROOT/build"
 copy_entry "$REPO_ROOT/public/favicon.ico" "$DOCROOT/favicon.ico"
 
-# uploads/: kept as a symlink — new CMS uploads (written via public_path())
-# land directly in the checkout and are immediately live with nothing to
-# re-sync.
-ln -sfn "$REPO_ROOT/public/uploads" "$DOCROOT/uploads"
-echo "==> linked   $DOCROOT/uploads -> $REPO_ROOT/public/uploads"
+# uploads/: same as build/ above — a real copy, not a symlink (this host
+# doesn't serve symlinks). New CMS uploads are written by the app into
+# $REPO_ROOT/public/uploads (via public_path()) but only become reachable at
+# the live URL after the NEXT deploy re-copies this folder — there is no
+# live/immediate sync for uploads added between deploys.
+copy_entry "$REPO_ROOT/public/uploads" "$DOCROOT/uploads"
 
 # .htaccess: a fresh real copy every deploy (cheap, and keeps Apache's
 # config-file reading independent of symlink behaviour).
