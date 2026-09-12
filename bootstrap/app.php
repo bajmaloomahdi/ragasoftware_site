@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\HandleRedirects;
+use App\Http\Middleware\MaintenanceGate;
 use App\Http\Middleware\NoIndex;
 use App\Http\Middleware\SetPublicLocale;
 use Illuminate\Foundation\Application;
@@ -32,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Public website — server-rendered Blade
         $middleware->web(prepend: [
+            MaintenanceGate::class,
             HandleRedirects::class,
         ], append: [
             SetPublicLocale::class,

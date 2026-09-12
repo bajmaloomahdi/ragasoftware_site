@@ -21,6 +21,7 @@ return [
         'analytics' => 'اسکریپت‌ها و آنالیتیکس',
         'seo' => 'سئو',
         'appearance' => 'ظاهر',
+        'maintenance' => 'حالت تعمیر و نگهداری',
     ],
 
     'fields' => [
@@ -66,5 +67,10 @@ return [
         ['key' => 'appearance.primary_color', 'group' => 'appearance', 'type' => 'string', 'label' => 'رنگ اصلی (Accent)', 'default' => '#2563eb'],
         ['key' => 'appearance.show_top_bar', 'group' => 'appearance', 'type' => 'boolean', 'label' => 'نمایش نوار بالای سایت', 'default' => true],
         ['key' => 'appearance.top_bar_text', 'group' => 'appearance', 'type' => 'string', 'label' => 'متن نوار بالا', 'default' => 'مشاوره رایگان پیاده‌سازی نرم‌افزار سازمانی'],
+
+        // --- maintenance mode ---
+        ['key' => 'maintenance.enabled', 'group' => 'maintenance', 'type' => 'boolean', 'label' => 'فعال‌سازی حالت تعمیر و نگهداری', 'default' => false, 'hint' => 'وقتی فعال باشد، همه‌ی بازدیدکنندگان صفحه‌ی «سایت در حال به‌روزرسانی» را می‌بینند. پنل ادمین همیشه در دسترس می‌ماند.'],
+        ['key' => 'maintenance.message', 'group' => 'maintenance', 'type' => 'text', 'label' => 'پیام نمایش‌داده‌شده', 'default' => 'سایت در حال به‌روزرسانی می‌باشد.'],
+        ['key' => 'maintenance.bypass_token', 'group' => 'maintenance', 'type' => 'string', 'label' => 'کد عبور مخفی', 'default' => '', 'hint' => 'یک رشته‌ی تصادفی و محرمانه انتخاب کنید. برای دیدن سایت واقعی، یک‌بار آدرس /?preview=همین-کد را باز کنید؛ بعد از آن یک کوکی روی مرورگرتان ذخیره می‌شود و دیگر نیازی به تکرار نیست.'],
     ],
 ];
