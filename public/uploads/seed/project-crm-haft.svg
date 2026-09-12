@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="راه‌اندازی CRM و باشگاه مشتریان فروشگاه‌های هفت">
   <defs>
-    <linearGradient id="bg81d22a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eafbf8"/><stop offset="1" stop-color="#ecfeff"/></linearGradient>
-    <linearGradient id="ac81d22a" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14b8a6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+    <linearGradient id="bg81d22a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f3ff"/><stop offset="1" stop-color="#faf4ff"/></linearGradient>
+    <linearGradient id="ac81d22a" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
   </defs>
   <rect width="1200" height="675" fill="url(#bg81d22a)"/>
   <g transform="translate(96 108)">
-    <rect width="1008" height="337" rx="18" fill="#ffffff" stroke="#dde8e6"/>
-    <circle cx="26" cy="26" r="5" fill="#c8d8d5"/><circle cx="44" cy="26" r="5" fill="#c8d8d5"/><circle cx="62" cy="26" r="5" fill="#c8d8d5"/>
-    <rect x="20" y="52" width="150" height="261" rx="12" fill="#eef4f3"/>
+    <rect width="1008" height="337" rx="18" fill="#ffffff" stroke="#e8e6f1"/>
+    <circle cx="26" cy="26" r="5" fill="#dcd9e8"/><circle cx="44" cy="26" r="5" fill="#dcd9e8"/><circle cx="62" cy="26" r="5" fill="#dcd9e8"/>
+    <rect x="20" y="52" width="150" height="261" rx="12" fill="#f4f3f9"/>
     <rect x="190" y="60" width="220" height="14" rx="7" fill="url(#ac81d22a)"/>
-    <rect x="190" y="86" width="140" height="10" rx="5" fill="#dde8e6"/>
-    <rect x="190" y="217" width="90" height="90" rx="10" fill="#eefcfa"/>
-    <rect x="292" y="217" width="90" height="90" rx="10" fill="#cffafe"/>
-    <rect x="394" y="217" width="90" height="90" rx="10" fill="#eefcfa"/>
-    <rect x="788" y="60" width="200" height="247" rx="12" fill="#f7fafa"/>
+    <rect x="190" y="86" width="140" height="10" rx="5" fill="#e8e6f1"/>
+    <rect x="190" y="217" width="90" height="90" rx="10" fill="#eef1ff"/>
+    <rect x="292" y="217" width="90" height="90" rx="10" fill="#f5e8ff"/>
+    <rect x="394" y="217" width="90" height="90" rx="10" fill="#eef1ff"/>
+    <rect x="788" y="60" width="200" height="247" rx="12" fill="#faf9fd"/>
     <rect x="808" y="267" width="40" height="40" rx="8" fill="url(#ac81d22a)"/>
   </g>
   <text x="8%" y="621" fill="#14161d" font-family="Vazirmatn, Tahoma, sans-serif" font-size="26" font-weight="700">راه‌اندازی CRM و باشگاه مشتریان فروشگاه‌های هفت</text>
