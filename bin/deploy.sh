@@ -181,6 +181,16 @@ echo "==> generated $DOCROOT/index.php (appBase=$REPO_ROOT)"
 echo "==> rebuilding caches"
 "$PHP" artisan package:discover --ansi
 "$PHP" artisan optimize:clear
+
+# Schema + roles/admin-user are safe to (re)apply on every deploy: migrate
+# only ever adds what's missing, and both seeders below are pure
+# updateOrCreate/findOrCreate calls that only touch roles/permissions and a
+# single admin user row — never CMS content — so this can never overwrite
+# anything an editor has changed through the admin panel.
+"$PHP" artisan migrate --force
+"$PHP" artisan db:seed --class=RolePermissionSeeder --force
+"$PHP" artisan db:seed --class=AdminUserSeeder --force
+
 "$PHP" artisan config:cache
 "$PHP" artisan route:cache
 "$PHP" artisan view:cache
