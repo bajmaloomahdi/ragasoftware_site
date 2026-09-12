@@ -33,26 +33,37 @@ DOCROOT="${DEPLOY_DOCROOT:-/home/ragasoftwareir/public_html}"
 LEGACY_BACKUP="$HOME/legacy_public_html_backup_$(date +%Y%m%d%H%M%S)"
 echo "==> docroot:  $DOCROOT"
 
-find_bin() {
-    # $1 = command name, rest = candidate absolute paths
-    local name="$1"; shift
-    local p
-    if p="$(command -v "$name" 2>/dev/null)"; then echo "$p"; return 0; fi
+find_php_cli() {
+    # Checks candidates IN ORDER and only accepts one whose `-v` output says
+    # "(cli)" — on this host /usr/bin/php is actually php-cgi, which silently
+    # accepts any artisan command and just prints the command list instead of
+    # running it, so a plain executable-bit check isn't enough.
+    local p out
     for p in "$@"; do
-        [ -x "$p" ] && { echo "$p"; return 0; }
+        [ -n "$p" ] && [ -x "$p" ] || continue
+        out="$("$p" -v 2>/dev/null)" || continue
+        case "$out" in
+            *"(cli)"*) echo "$p"; return 0 ;;
+        esac
     done
     return 1
 }
 
-PHP="$(find_bin php \
+PHP="$(find_php_cli \
+    /opt/cpanel/ea-php84/root/usr/bin/php \
+    /opt/cpanel/ea-php83/root/usr/bin/php \
+    /opt/cpanel/ea-php82/root/usr/bin/php \
+    /usr/local/bin/ea-php84 \
+    /usr/local/bin/ea-php83 \
     /usr/local/bin/php \
     "$HOME/bin/php" \
-    /opt/cpanel/ea-php83/root/usr/bin/php \
-    /opt/cpanel/ea-php84/root/usr/bin/php \
-    /usr/local/bin/ea-php83 \
-    /usr/bin/php)" || { echo "ERROR: php CLI not found — set PATH in .cpanel.yml"; exit 1; }
+    /usr/bin/php \
+    "$(command -v php 2>/dev/null)")" || {
+    echo "ERROR: no PHP CLI binary found — every candidate was missing, not executable, or reported something other than '(cli)' in 'php -v' (e.g. php-cgi). Ask host support for the correct CLI path and add it to find_php_cli's candidate list in bin/deploy.sh.";
+    exit 1;
+}
 
-echo "==> php:      $PHP  ($("$PHP" -r 'echo PHP_VERSION;' 2>/dev/null))"
+echo "==> php:      $PHP  ($("$PHP" -v | head -1))"
 
 backup_leftover() {
     # Moves (never deletes) a real, non-symlink leftover out of the web root.
