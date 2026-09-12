@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Image, Space, Typography } from 'antd';
 import { PictureOutlined, DeleteOutlined } from '@ant-design/icons';
 import MediaPicker from './MediaPicker';
@@ -17,6 +17,13 @@ interface Props {
 export default function MediaField({ label, value, previewUrl, onChange }: Props) {
     const [open, setOpen] = useState(false);
     const [localPreview, setLocalPreview] = useState<string | null>(previewUrl ?? null);
+
+    // previewUrl arrives asynchronously from the server-resolved media
+    // relation; keep local state in sync if it changes after mount (e.g. a
+    // lazily-rendered admin Tabs pane) instead of only reading it once.
+    useEffect(() => {
+        setLocalPreview(previewUrl ?? null);
+    }, [previewUrl]);
 
     return (
         <div>

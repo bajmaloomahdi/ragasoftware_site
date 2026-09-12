@@ -23,7 +23,7 @@
     <nav class="container-site flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]" aria-label="ناوبری اصلی">
         <a href="{{ route('home') }}" class="flex items-center gap-2 font-extrabold text-ink-900">
             @if($logo)
-                <img src="{{ $logo->variantUrl('sm') }}" alt="{{ $companyName }}" class="h-9 w-auto lg:h-10" width="140" height="40">
+                <img src="{{ $logo->variantUrl('sm') }}" alt="{{ $companyName }}" class="img-fade h-9 w-auto lg:h-10" width="140" height="40">
             @else
                 <span class="grid h-9 w-9 place-items-center rounded-xl text-sm text-white" style="background-image: linear-gradient(135deg, var(--color-brand-500), var(--color-iris-500));">R</span>
                 <span class="text-lg lg:text-xl">{{ $companyName }}</span>

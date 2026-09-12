@@ -115,7 +115,6 @@ return [
             'fields' => [
                 'heading' => ['type' => 'text', 'label' => 'عنوان'],
                 'body' => ['type' => 'richtext', 'label' => 'متن معرفی'],
-                'media_id' => ['type' => 'media', 'label' => 'تصویر'],
                 'cta_label' => ['type' => 'text', 'label' => 'متن دکمه'],
                 'cta_url' => ['type' => 'text', 'label' => 'لینک دکمه'],
             ],

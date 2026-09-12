@@ -17,7 +17,7 @@
         <div class="lg:col-span-2">
             <a href="{{ route('home') }}" class="flex items-center gap-2">
                 @if($logo)
-                    <img src="{{ $logo->variantUrl('sm') }}" alt="{{ $companyName }}" class="h-9 w-auto" width="140" height="40">
+                    <img src="{{ $logo->variantUrl('sm') }}" alt="{{ $companyName }}" class="img-fade h-9 w-auto" width="140" height="40">
                 @else
                     <span class="grid h-9 w-9 place-items-center rounded-xl text-sm font-extrabold text-white" style="background-image: linear-gradient(135deg, var(--color-brand-500), var(--color-iris-500));">R</span>
                     <span class="text-lg font-extrabold text-ink-900">{{ $companyName }}</span>

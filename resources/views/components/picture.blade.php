@@ -16,7 +16,7 @@
 
 @if($media)
     @if($media->isSvg())
-        <img src="{{ $media->url }}" alt="{{ $altText }}" {{ $attributes->merge(['class' => $class]) }}
+        <img src="{{ $media->url }}" alt="{{ $altText }}" {{ $attributes->merge(['class' => trim('img-fade '.$class)]) }}
              @if(!$eager) loading="lazy" decoding="async" @endif style="{{ $style }}">
     @else
         <picture>
@@ -29,7 +29,7 @@
             <img src="{{ $media->variantUrl($size) }}"
                  alt="{{ $altText }}"
                  width="{{ $media->width ?: 1200 }}" height="{{ $media->height ?: 800 }}"
-                 {{ $attributes->merge(['class' => $class]) }}
+                 {{ $attributes->merge(['class' => trim('img-fade '.$class)]) }}
                  @if($eager) fetchpriority="high" @else loading="lazy" decoding="async" @endif
                  style="{{ $style }}">
         </picture>

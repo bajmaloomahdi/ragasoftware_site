@@ -44,3 +44,21 @@ function initScrollspy() {
 
 if (document.readyState !== 'loading') initScrollspy();
 else document.addEventListener('DOMContentLoaded', initScrollspy);
+
+/* ------------------------------------------------------------------ */
+/*  Image fade-in — every <img class="img-fade"> reveals itself once it
+/*  has actually loaded, instead of popping in as the network delivers it.
+/* ------------------------------------------------------------------ */
+function initImageFadeIn() {
+    document.querySelectorAll('img.img-fade').forEach((img) => {
+        const reveal = () => img.classList.add('is-loaded');
+        if (img.complete) reveal();
+        else {
+            img.addEventListener('load', reveal, { once: true });
+            img.addEventListener('error', reveal, { once: true });
+        }
+    });
+}
+
+if (document.readyState !== 'loading') initImageFadeIn();
+else document.addEventListener('DOMContentLoaded', initImageFadeIn);

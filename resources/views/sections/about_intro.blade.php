@@ -1,4 +1,5 @@
 @php($s = $settings)
+@php($logo = media($site->get('general.logo_media_id')))
 <section class="section-pad">
     <div class="container-site grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div class="order-2 lg:order-1">
@@ -16,10 +17,21 @@
                 </a>
             @endif
         </div>
+        {{-- Company logo showcase box --}}
         <div class="relative order-1 lg:order-2">
             <div class="glow -inset-4" style="background: radial-gradient(circle, var(--color-iris-100), transparent 70%);"></div>
-            <div class="relative overflow-hidden rounded-3xl border border-paper-200 bg-white p-2" style="box-shadow: var(--shadow-soft);">
-                <x-picture :media="$media ?? null" ratio="4/3" class="w-full rounded-2xl object-cover" />
+            <div class="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl border border-paper-200 bg-white p-10"
+                 style="box-shadow: var(--shadow-soft);">
+                <div class="pointer-events-none absolute inset-0 opacity-60"
+                     style="background-image: radial-gradient(circle at 1px 1px, var(--color-paper-300) 1px, transparent 0); background-size: 24px 24px; -webkit-mask-image: radial-gradient(circle, black, transparent 75%); mask-image: radial-gradient(circle, black, transparent 75%);"></div>
+                @if($logo)
+                    <img src="{{ $logo->isSvg() ? $logo->url : $logo->variantUrl('lg') }}"
+                         alt="{{ $site->get('general.company_name', 'راگا سافت‌ور') }}"
+                         class="img-fade relative z-10 max-h-24 w-auto max-w-[70%] object-contain sm:max-h-32"
+                         loading="lazy" decoding="async" width="240" height="96">
+                @else
+                    <span class="relative z-10 text-2xl font-extrabold text-ink-300">{{ $site->get('general.company_name', 'راگا سافت‌ور') }}</span>
+                @endif
             </div>
         </div>
     </div>

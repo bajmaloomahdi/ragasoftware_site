@@ -16,15 +16,22 @@ class SettingsController extends Controller
     {
         $schema = config('site.fields');
         $values = [];
+        $mediaPreviews = [];
 
         foreach ($schema as $field) {
-            $values[$field['key']] = $settings->get($field['key'], $field['default'] ?? null);
+            $value = $settings->get($field['key'], $field['default'] ?? null);
+            $values[$field['key']] = $value;
+
+            if ($field['type'] === 'media' && $value) {
+                $mediaPreviews[$field['key']] = media($value)?->thumb_url;
+            }
         }
 
         return Inertia::render('Settings/Edit', [
             'groups' => config('site.groups'),
             'schema' => $schema,
             'values' => $values,
+            'mediaPreviews' => $mediaPreviews,
         ]);
     }
 

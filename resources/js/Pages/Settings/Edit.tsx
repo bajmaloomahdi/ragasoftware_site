@@ -18,9 +18,10 @@ type Props = PageProps<{
     groups: Record<string, string>;
     schema: FieldDef[];
     values: Record<string, unknown>;
+    mediaPreviews: Record<string, string | null>;
 }>;
 
-export default function SettingsEdit({ groups, schema, values }: Props) {
+export default function SettingsEdit({ groups, schema, values, mediaPreviews }: Props) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const form = useForm<any>({ values });
 
@@ -51,7 +52,11 @@ export default function SettingsEdit({ groups, schema, values }: Props) {
             case 'media':
                 return (
                     <Form.Item key={f.key} label={f.label} extra={f.hint}>
-                        <MediaField value={(v as number) ?? null} onChange={(id) => set(f.key, id)} />
+                        <MediaField
+                            value={(v as number) ?? null}
+                            previewUrl={mediaPreviews[f.key] ?? null}
+                            onChange={(id) => set(f.key, id)}
+                        />
                     </Form.Item>
                 );
             default:
