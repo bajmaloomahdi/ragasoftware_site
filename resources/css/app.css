@@ -12,7 +12,7 @@
 
 /* ------------------------------------------------------------------ */
 /*  RagaSoftware — Bright / Modern / Premium / Tech design system
-/*  Base: white + very-light cool grays · Accent: Indigo → Violet
+/*  Base: white + very-light cool grays · Accent: Teal → Cyan
 /* ------------------------------------------------------------------ */
 @theme {
     --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -30,37 +30,37 @@
     --color-ink-900: #14161d;
     --color-ink-950: #0b0c11;
 
-    /* Paper — near-white surfaces with the faintest lilac tint */
-    --color-paper-50: #faf9fd;
-    --color-paper-100: #f4f3f9;
-    --color-paper-200: #e8e6f1;
-    --color-paper-300: #d9d6e6;
+    /* Paper — near-white surfaces, neutral (faintest cool tint) */
+    --color-paper-50: #f7fafa;
+    --color-paper-100: #eef4f3;
+    --color-paper-200: #dde8e6;
+    --color-paper-300: #c8d8d5;
 
-    /* Brand — Indigo (primary accent) */
-    --color-brand-50: #eef1ff;
-    --color-brand-100: #e1e4ff;
-    --color-brand-200: #c7ccfe;
-    --color-brand-300: #a4a8fb;
-    --color-brand-400: #8384f6;
-    --color-brand-500: #6366f1;
-    --color-brand-600: #574fe6;
-    --color-brand-700: #4a3fca;
-    --color-brand-800: #3d36a2;
-    --color-brand-900: #363380;
+    /* Brand — Teal (primary accent) */
+    --color-brand-50: #eefcfa;
+    --color-brand-100: #d2f6f0;
+    --color-brand-200: #a6ecdf;
+    --color-brand-300: #6fdcc9;
+    --color-brand-400: #3ec4ae;
+    --color-brand-500: #14b8a6;
+    --color-brand-600: #0d9488;
+    --color-brand-700: #0f766e;
+    --color-brand-800: #115e56;
+    --color-brand-900: #134e48;
 
-    /* Iris — Violet (secondary accent, mainly gradients + glows) */
-    --color-iris-50: #fbf4ff;
-    --color-iris-100: #f5e8ff;
-    --color-iris-200: #ecd4ff;
-    --color-iris-300: #ddb4fe;
-    --color-iris-400: #c884fb;
-    --color-iris-500: #a855f7;
-    --color-iris-600: #9234ea;
-    --color-iris-700: #7a28c8;
+    /* Iris — Cyan (secondary accent, mainly gradients + glows) */
+    --color-iris-50: #ecfeff;
+    --color-iris-100: #cffafe;
+    --color-iris-200: #a5f3fc;
+    --color-iris-300: #67e8f9;
+    --color-iris-400: #22d3ee;
+    --color-iris-500: #06b6d4;
+    --color-iris-600: #0891b2;
+    --color-iris-700: #0e7490;
 
     --radius-card: 1rem;
-    --shadow-soft: 0 1px 2px rgb(20 22 29 / 0.04), 0 10px 30px -12px rgb(99 102 241 / 0.14);
-    --shadow-lift: 0 2px 6px rgb(20 22 29 / 0.05), 0 24px 48px -16px rgb(99 102 241 / 0.22);
+    --shadow-soft: 0 1px 2px rgb(20 22 29 / 0.04), 0 10px 30px -12px rgb(20 184 166 / 0.14);
+    --shadow-lift: 0 2px 6px rgb(20 22 29 / 0.05), 0 24px 48px -16px rgb(20 184 166 / 0.22);
 
     --breakpoint-xs: 22rem;
 }

@@ -8,13 +8,13 @@ use App\Models\Media;
  * Generates lightweight, bright branded SVG placeholders under
  * public/uploads/seed/ and registers them as Media rows, so seeded content
  * has real (committed, tiny) images without shipping binary assets or running
- * the uploader. Palette matches the site's Indigo → Violet design system.
+ * the uploader. Palette matches the site's Teal → Cyan design system.
  */
 class SeedMedia
 {
-    private const INDIGO = '#6366f1';
+    private const INDIGO = '#14b8a6';
 
-    private const VIOLET = '#a855f7';
+    private const VIOLET = '#06b6d4';
 
     private const INK = '#14161d';
 
@@ -55,6 +55,42 @@ class SeedMedia
             'title' => $label,
             'variants' => [],
         ]);
+    }
+
+    /**
+     * Rewrites the SVG file content of every already-seeded placeholder
+     * (public/uploads/seed/*.svg) with the current palette, in place — the
+     * Media row (id, path, filename) is untouched, so every product/customer/
+     * team member/etc. still pointing at it keeps working, it just shows the
+     * refreshed colors. Variant is inferred from the stored width/height
+     * (the same mapping make() uses to pick them originally).
+     */
+    public static function regenerateAll(): int
+    {
+        $variantBySize = [
+            '1200x750' => 'mockup',
+            '1200x675' => 'cover',
+            '600x600' => 'square',
+            '240x96' => 'logo',
+            '1200x630' => 'og',
+        ];
+
+        $count = 0;
+
+        Media::where('path', 'like', 'seed/%')
+            ->where('extension', 'svg')
+            ->each(function (Media $media) use ($variantBySize, &$count) {
+                $variant = $variantBySize["{$media->width}x{$media->height}"] ?? 'card';
+                $svg = self::svg($media->title ?: $media->alt_text ?: '', $media->width, $media->height, $variant);
+                $abs = public_path("uploads/{$media->path}");
+
+                if (is_file($abs)) {
+                    file_put_contents($abs, $svg);
+                    $count++;
+                }
+            });
+
+        return $count;
     }
 
     private static function svg(string $label, int $w, int $h, string $variant): string
@@ -128,20 +164,20 @@ class SeedMedia
         return <<<SVG
         <svg xmlns="http://www.w3.org/2000/svg" width="{$w}" height="{$h}" viewBox="0 0 {$w} {$h}" role="img" aria-label="{$safe}">
           <defs>
-            <linearGradient id="bg{$id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f3ff"/><stop offset="1" stop-color="#faf4ff"/></linearGradient>
+            <linearGradient id="bg{$id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eafbf8"/><stop offset="1" stop-color="#ecfeff"/></linearGradient>
             <linearGradient id="ac{$id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{$indigo}"/><stop offset="1" stop-color="{$violet}"/></linearGradient>
           </defs>
           <rect width="{$w}" height="{$h}" fill="url(#bg{$id})"/>
           <g transform="translate({$gx} {$gy})">
-            <rect width="{$pw}" height="{$panelH}" rx="18" fill="#ffffff" stroke="#e8e6f1"/>
-            <circle cx="26" cy="26" r="5" fill="#dcd9e8"/><circle cx="44" cy="26" r="5" fill="#dcd9e8"/><circle cx="62" cy="26" r="5" fill="#dcd9e8"/>
-            <rect x="20" y="52" width="150" height="{$sideH}" rx="12" fill="#f4f3f9"/>
+            <rect width="{$pw}" height="{$panelH}" rx="18" fill="#ffffff" stroke="#dde8e6"/>
+            <circle cx="26" cy="26" r="5" fill="#c8d8d5"/><circle cx="44" cy="26" r="5" fill="#c8d8d5"/><circle cx="62" cy="26" r="5" fill="#c8d8d5"/>
+            <rect x="20" y="52" width="150" height="{$sideH}" rx="12" fill="#eef4f3"/>
             <rect x="190" y="60" width="220" height="14" rx="7" fill="url(#ac{$id})"/>
-            <rect x="190" y="86" width="140" height="10" rx="5" fill="#e8e6f1"/>
-            <rect x="190" y="{$chartY}" width="90" height="90" rx="10" fill="#eef1ff"/>
-            <rect x="292" y="{$chartY}" width="90" height="90" rx="10" fill="#f5e8ff"/>
-            <rect x="394" y="{$chartY}" width="90" height="90" rx="10" fill="#eef1ff"/>
-            <rect x="{$rightX}" y="60" width="200" height="{$rightH}" rx="12" fill="#faf9fd"/>
+            <rect x="190" y="86" width="140" height="10" rx="5" fill="#dde8e6"/>
+            <rect x="190" y="{$chartY}" width="90" height="90" rx="10" fill="#eefcfa"/>
+            <rect x="292" y="{$chartY}" width="90" height="90" rx="10" fill="#cffafe"/>
+            <rect x="394" y="{$chartY}" width="90" height="90" rx="10" fill="#eefcfa"/>
+            <rect x="{$rightX}" y="60" width="200" height="{$rightH}" rx="12" fill="#f7fafa"/>
             <rect x="{$rightBadgeX}" y="{$rightBadgeY}" width="40" height="40" rx="8" fill="url(#ac{$id})"/>
           </g>
           <text x="8%" y="{$labelY}" fill="{$ink}" font-family="{$font}" font-size="26" font-weight="700">{$safe}</text>
