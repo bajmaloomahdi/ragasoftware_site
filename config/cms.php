@@ -67,7 +67,6 @@ return [
         'team_grid' => 'team',
         'blog_latest' => 'articles',
         'faq' => 'faq',
-        'cta_banner' => 'contact',
         'contact_form' => 'contact',
     ],
 
