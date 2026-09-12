@@ -403,7 +403,7 @@ class RealisticContentSeeder extends Seeder
             ['محصولات', 'url', '/#products'],
             ['پروژه‌ها', 'url', '/#projects'],
             ['وبلاگ', 'url', '/blog'],
-            ['تماس با ما', 'url', '/contact'],
+            ['تماس با ما', 'url', '/#contact'],
         ];
         foreach ($items as $i => [$label, $type, $val]) {
             $header->items()->create(['label' => $label, 'link_type' => $type, 'link_value' => $val, 'sort_order' => $i, 'is_active' => true]);

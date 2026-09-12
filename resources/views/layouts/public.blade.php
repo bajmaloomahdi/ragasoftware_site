@@ -40,6 +40,17 @@
 
     @include('partials.footer')
 
+    <button type="button"
+            x-data="{ show: false }"
+            @scroll.window="show = window.scrollY > 400"
+            x-show="show" x-cloak x-transition.opacity
+            @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+            class="fixed bottom-6 left-6 z-30 grid h-11 w-11 place-items-center rounded-full bg-white text-ink-700 transition hover:-translate-y-0.5 hover:text-brand-600"
+            style="box-shadow: var(--shadow-lift);"
+            aria-label="بازگشت به بالای صفحه">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+
     {!! $site->get('analytics.body_scripts') !!}
     @stack('scripts')
 </body>
